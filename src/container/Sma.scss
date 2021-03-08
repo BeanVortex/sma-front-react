@@ -1,0 +1,31 @@
+/* *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+.container {
+    max-width: 1400px;
+    padding: 1rem;
+    margin: auto;
+}
+
+.head{
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   justify-self: center;
+   z-index: 4;
+}
+
+.content {
+    display: grid;
+    padding-top: 2rem;
+    grid-template-columns: 0.5fr 2fr 0.5fr;
+    grid-gap: 0.5rem;
+} */
+
+.overflow-x-hidden{
+    overflow-x: hidden;
+}
