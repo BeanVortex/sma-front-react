@@ -4,7 +4,7 @@ import Sma from "./Sma";
 import axios from "axios";
 //import 'bootstrap/dist/css/bootstrap.min.css';
 
-axios.defaults.baseURL = "http://localhost:8080";
+axios.defaults.baseURL = "https://sma-app-back.herokuapp.com";
 //axios.defaults.headers.common["Authorization"] = "token";
 //axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
 

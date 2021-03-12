@@ -38,9 +38,9 @@ export default class FullPost extends Component {
 
   render() {
     console.log(this.props);
-    let comments = this.state.comments.map((comment) => (
-      <Comment key={comment.id}></Comment>
-    ));
+    // let comments = this.state.comments.map((comment) => (
+    //   <Comment key={comment.id}></Comment>
+    // ));
     return (
       <Container>
         <Card className="card shadow-sm rounded-lg border-dark ">

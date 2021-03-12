@@ -8,18 +8,19 @@ import NewPost from "../components/NewPost/NewPost";
 import Discover from "../components/Discover/Discover";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Side from "../components/Side/Side";
-
 import { Container, Row, Col } from "react-bootstrap";
+import Login from "../components/User/Login/Login";
+import Signup from "../components/User/Signup/Signup";
 
-export default class Sma extends Component {
+class Sma extends Component {
   render() {
     return (
       <div>
         <Container className="overflow-x-hidden pb-2">
-          <Header className="sticky head d-block " />
+          <Header className="sticky head d-block" />
 
           <Row className="d-flex justify-content-center">
-            <Col className="col-lg-2 d-none d-lg-block mt-2">
+            <Col className="col-lg-2 d-lg-block mt-2">
               <Side />
             </Col>
             <Col className="col-lg-8 col-md-12 col-sm-12 mt-2 mb-2">
@@ -29,11 +30,12 @@ export default class Sma extends Component {
                 <Route exact path="/new-post" component={NewPost} />
                 <Route exact path="/discover" component={Discover} />
                 <Route exact path="/posts/:id" component={FullPost} />
-
+                <Route exact path="/login" component={Login}></Route>
+                <Route exact path="/signup" component={Signup}></Route>
               </Switch>
             </Col>
-
-            <Col className="col-lg-2 d-none d-lg-block mt-2">
+            <div className="bd">dsfdsa</div>
+            <Col className="col-lg-2 d-lg-block mt-2">
               <Side />
             </Col>
           </Row>
@@ -42,3 +44,5 @@ export default class Sma extends Component {
     );
   }
 }
+
+export default Sma;

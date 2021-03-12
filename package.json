@@ -8,7 +8,7 @@
     "@testing-library/user-event": "^12.6.0",
     "axios": "^0.21.0",
     "bootstrap": "^4.6.0",
-    "node-sass": "^4.14.1",
+    "node-sass": "^5.0.0",
     "react": "^17.0.1",
     "react-bootstrap": "^1.4.3",
     "react-dom": "^17.0.1",
@@ -17,6 +17,7 @@
     "react-scripts": "^1.1.5",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
+    "sass-loader": "^11.0.1",
     "thunk": "^0.0.1",
     "web-vitals": "^0.2.4"
   },

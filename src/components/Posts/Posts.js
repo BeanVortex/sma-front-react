@@ -2,18 +2,19 @@ import React, { Component } from "react";
 import "./Posts.scss";
 import Post from "./Post/Post";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import CardColumns from "react-bootstrap/CardColumns";
+import { connect } from "react-redux";
 
-export default class Posts extends Component {
+class Posts extends Component {
   state = {
     posts: null,
     pageable: true,
   };
 
   componentDidMount() {
-    axios.get("/api/post").then((response) => {
+    axios.get("/api/post/").then((response) => {
       this.setState({ posts: response.data });
     });
   }
@@ -29,6 +30,17 @@ export default class Posts extends Component {
       ));
     }
 
-    return <CardColumns>{posts}</CardColumns>;
+    let redirect = null;
+    if (!this.props.user.authenticated){
+      redirect = <Redirect from="/" to="/login"/>
+    }
+
+    return <CardColumns>{redirect}{posts}</CardColumns>;
   }
 }
+
+//state we set up at reducer.js
+const mapStateToProps = (state) => state;
+
+
+export default connect(mapStateToProps)(Posts);

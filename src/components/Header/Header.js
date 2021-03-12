@@ -10,7 +10,7 @@ export default class Header extends Component {
       <Navbar
         collapseOnSelect
         expand="md"
-        className="navbar sticky-top top-1 mb-3 rounded-lg bg-dark navbar-dark mb-3"
+        className="navbar sticky-top top-1 mb-3 rounded-lg bg-dark navbar-dark mt-1"
       >
         <Container className="py-2 px-0">
           <NavLink className="navbar-brand" to="/">
@@ -21,6 +21,16 @@ export default class Header extends Component {
 
           <Navbar.Collapse className="justify-content-end" id="navbar-nav">
             <Nav className="navbar-nav justify-content-end">
+              <Nav.Item>
+                <NavLink className="nav-link" to="/signup">
+                  Sign Up
+                </NavLink>
+              </Nav.Item>
+              <Nav.Item>
+                <NavLink className="nav-link" to="/login">
+                  Login
+                </NavLink>
+              </Nav.Item>
               <Nav.Item>
                 <NavLink className="nav-link" to="/posts">
                   Posts
