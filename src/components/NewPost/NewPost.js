@@ -161,7 +161,7 @@ export default class NewPost extends Component {
     const contentIn = document.getElementById("content-in");
 
     new Promise((resolve) => {
-      setTimeout(resolve, 1000);
+      setTimeout(resolve, 100);
     }).then(() => {
       titleIn.value = "";
       contentIn.value = "";

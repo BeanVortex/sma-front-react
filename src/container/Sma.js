@@ -20,7 +20,7 @@ class Sma extends Component {
           <Header className="sticky head d-block" />
 
           <Row className="d-flex justify-content-center">
-            <Col className="col-lg-2 d-lg-block mt-2">
+            <Col className="col-lg-2 d-none d-lg-block mt-2">
               <Side />
             </Col>
             <Col className="col-lg-8 col-md-12 col-sm-12 mt-2 mb-2">
@@ -35,7 +35,7 @@ class Sma extends Component {
               </Switch>
             </Col>
             <div className="bd">dsfdsa</div>
-            <Col className="col-lg-2 d-lg-block mt-2">
+            <Col className="col-lg-2 d-none d-lg-block mt-2">
               <Side />
             </Col>
           </Row>
