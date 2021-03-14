@@ -13,11 +13,14 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_AUTH:
-      return { ...action.payload };
-    case actionTypes.UPDATE_AUTH:
       return {
-        ...state,
-        accessToken: action.accessToken,
+        id: action.payload.id,
+        username: action.payload.username,
+        email: action.payload.email,
+        profile: action.payload.profile,
+        accessToken: action.payload.accessToken,
+        refreshToken: action.payload.refreshToken,
+        authenticated: true
       };
     default:
       return state;

@@ -34,7 +34,6 @@ class Sma extends Component {
                 <Route exact path="/signup" component={Signup}></Route>
               </Switch>
             </Col>
-            <div className="bd">dsfdsa</div>
             <Col className="col-lg-2 d-none d-lg-block mt-2">
               <Side />
             </Col>

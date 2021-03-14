@@ -3,23 +3,17 @@ import { Form } from "react-bootstrap";
 import {connect } from "react-redux";
 import * as actionCreators from '../../../store/actions/userAction';
 class Login extends Component {
-  state = {
-    username: "",
-    password: "",
-  };
-
 
   loginEvent = () => {
       const username = document.getElementById("username").value;
       const password = document.getElementById("password").value;
-      this.setState({username, password});
       console.log(this.props);
       this.props.login(username, password);
   }
 
   render() {
     return (
-      <Form className="d-flex justify-content-center h-50">
+      <Form className="d-flex justify-content-center h-100">
         <div className="w-75 d-flex flex-column justify-content-center">
           <Form.Group className="mb-4">
             <input
