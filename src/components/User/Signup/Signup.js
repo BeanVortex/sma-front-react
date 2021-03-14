@@ -11,21 +11,22 @@ class Signup extends Component {
     this.props.signup(email, username, password);
   };
 
+  login = () => {
+    this.props.history.push("/login");
+  };
+
   render() {
     return (
       <Form className="d-flex justify-content-center h-100">
         <div className="w-75 d-flex flex-column justify-content-center">
-
-        <Form.Group className="mb-4">
+          <Form.Group className="mb-4">
             <input
               type="text"
               id="email"
               placeholder="Email"
               className="form-control "
             />
-            <div className="invalid-feedback mb-3">
-              Enter your email
-            </div>
+            <div className="invalid-feedback mb-3">Enter your email</div>
           </Form.Group>
 
           <Form.Group className="mb-4">
@@ -35,9 +36,7 @@ class Signup extends Component {
               placeholder="Username"
               className="form-control "
             />
-            <div className="invalid-feedback mb-3">
-              Enter your username
-            </div>
+            <div className="invalid-feedback mb-3">Enter your username</div>
           </Form.Group>
 
           <Form.Group className="mb-4">
@@ -55,7 +54,8 @@ class Signup extends Component {
               type="button"
               className="btn btn-outline-success mr-2 col"
               value="Login"
-              />
+              onClick={this.login}
+            />
             <input
               type="button"
               className="btn btn-primary col"
@@ -73,7 +73,7 @@ const mapStateToProps = (state) => state;
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    signup: (email ,username, password) =>
+    signup: (email, username, password) =>
       dispatch(actionCreators.signup(email, username, password)),
   };
 };

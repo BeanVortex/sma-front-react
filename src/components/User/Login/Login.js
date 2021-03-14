@@ -1,15 +1,18 @@
 import React, { Component } from "react";
 import { Form } from "react-bootstrap";
-import {connect } from "react-redux";
-import * as actionCreators from '../../../store/actions/userAction';
+import { connect } from "react-redux";
+import * as actionCreators from "../../../store/actions/userAction";
 class Login extends Component {
-
   loginEvent = () => {
-      const username = document.getElementById("username").value;
-      const password = document.getElementById("password").value;
-      console.log(this.props);
-      this.props.login(username, password);
-  }
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    console.log(this.props);
+    this.props.login(username, password);
+  };
+
+  signup = () => {
+    this.props.history.push("/signup");
+  };
 
   render() {
     return (
@@ -38,8 +41,18 @@ class Login extends Component {
           </Form.Group>
 
           <Form.Group className="d-flex ">
-            <input type="button" className="btn btn-success mr-2 col" value="Login" onClick={this.loginEvent}/>
-            <input type="button" className="btn btn-outline-primary col" value="SignUp"/>
+            <input
+              type="button"
+              className="btn btn-success mr-2 col"
+              value="Login"
+              onClick={this.loginEvent}
+            />
+            <input
+              type="button"
+              className="btn btn-outline-primary col"
+              value="SignUp"
+              onClick={this.signup}
+            />
           </Form.Group>
         </div>
       </Form>
@@ -47,12 +60,13 @@ class Login extends Component {
   }
 }
 
-const mapStateToProps = state => state;
+const mapStateToProps = (state) => state;
 
-const mapDispatchToProps = dispatch => {
-    return {
-        login: (username, password) => dispatch(actionCreators.login(username, password))
-    }
-}
+const mapDispatchToProps = (dispatch) => {
+  return {
+    login: (username, password) =>
+      dispatch(actionCreators.login(username, password)),
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

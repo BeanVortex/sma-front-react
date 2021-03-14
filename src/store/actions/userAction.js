@@ -32,7 +32,7 @@ export const login = (username, password) => {
 export const signup = (email, username, password) => {
   const data = new FormData();
   data.append("email", email);
-  data.append("username", username);
+  data.append("userName", username);
   data.append("password", password);
 
   return (dispatch) => {
