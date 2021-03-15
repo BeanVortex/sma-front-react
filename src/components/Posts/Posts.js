@@ -14,14 +14,15 @@ class Posts extends Component {
   };
 
   componentDidMount() {
-    axios.get("/api/post/").then((response) => {
-      this.setState({ posts: response.data });
-    });
+    if (this.props.user.authenticated) {
+      axios.get("/api/post/").then((response) => {
+        this.setState({ posts: response.data });
+      });
+    }
   }
 
   render() {
     let posts = "";
-    console.log(this.props.match.path);
     if (this.state.posts != null) {
       posts = this.state.posts.content.map((post) => (
         <Link key={post.id} to={"posts/" + post.id}>
@@ -31,16 +32,20 @@ class Posts extends Component {
     }
 
     let redirect = null;
-    if (!this.props.user.authenticated){
-      redirect = <Redirect from="/" to="/login"/>
+    if (!this.props.user.authenticated) {
+      redirect = <Redirect from="/" to="/login" />;
     }
 
-    return <CardColumns>{redirect}{posts}</CardColumns>;
+    return (
+      <CardColumns>
+        {redirect}
+        {posts}
+      </CardColumns>
+    );
   }
 }
 
 //state we set up at reducer.js
 const mapStateToProps = (state) => state;
-
 
 export default connect(mapStateToProps)(Posts);
