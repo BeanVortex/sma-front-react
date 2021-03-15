@@ -19,7 +19,7 @@ export const login = (username, password) => {
       })
       .then((response) => {
         console.log(response);
-        cookie.set("accessToken", response.headers.accesstoken);
+        cookie.set("accessToken", response.headers.accesstoken, {expires: extractDate(response.headers.expiration)});
         cookie.set("refreshToken", response.headers.refreshtoken, {expires: extractDate(response.headers.expiration)});
         return dispatch({
           type: actionTypes.SET_AUTH,
