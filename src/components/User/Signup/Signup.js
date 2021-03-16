@@ -8,7 +8,7 @@ class Signup extends Component {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
     console.log(this.props);
-    this.props.signup(email, username, password);
+    this.props.signup(email, username, password, this.props.history.push);
   };
 
   login = () => {
@@ -73,8 +73,8 @@ const mapStateToProps = (state) => state;
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    signup: (email, username, password) =>
-      dispatch(actionCreators.signup(email, username, password)),
+    signup: (email, username, password, push) =>
+      dispatch(actionCreators.signup(email, username, password, push)),
   };
 };
 

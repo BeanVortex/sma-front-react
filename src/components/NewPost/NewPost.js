@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import "./NewPost.scss";
 import axios from "axios";
 import no_img from "./no-photo.png";
-import {debounce} from "lodash";
+import { debounce } from "lodash";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Form, Card, Alert } from "react-bootstrap";
+import { requestHeader } from "../../Utils/AuthUtil";
 
 export default class NewPost extends Component {
   state = {
@@ -34,7 +35,6 @@ export default class NewPost extends Component {
     }
   };
 
-  
   titleHandleChange = debounce((event) => {
     this.setState({ title: event.target.value });
     const titleIn = document.getElementById("title-in");
@@ -61,9 +61,7 @@ export default class NewPost extends Component {
         url: "/api/post/",
         data: data,
         method: "POST",
-        // headers: {
-        //     authorization: "token"
-        // }
+        headers: requestHeader(),
       }).then((response) => {
         this.statusAlerts(response);
         this.resetComponent();
@@ -174,10 +172,10 @@ export default class NewPost extends Component {
         curImg: no_img,
       });
 
-      //history.push pushes to the stack 
+      //history.push pushes to the stack
       // history.replace same as Redirect
       // <Redirect to="/posts"/>
-      this.props.history.replace({pathname: "/posts"});
+      this.props.history.replace({ pathname: "/posts" });
     });
   };
 
@@ -187,7 +185,6 @@ export default class NewPost extends Component {
       <Form>
         <Card className="card d-block shadow-sm">
           <Card.Body className="pb-0">
-
             <Card.Img
               className="rounded mb-3 img-fluid d-block w-100 mx-auto img-max"
               src={this.state.curImg}

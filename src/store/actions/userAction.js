@@ -1,16 +1,8 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
-import Cookies from 'universal-cookie';
-
-const cookie = new Cookies();
 
 
-const extractDate = (date) => {
-  return new Date(date);
-}
-
-
-export const login = (username, password) => {
+export const login = (username, password, push) => {
   return (dispatch) => {
     axios
       .post("/api/user/login/", {
@@ -19,8 +11,7 @@ export const login = (username, password) => {
       })
       .then((response) => {
         console.log(response);
-        cookie.set("accessToken", response.headers.accesstoken, {expires: extractDate(response.headers.expiration)});
-        cookie.set("refreshToken", response.headers.refreshtoken, {expires: extractDate(response.headers.expiration)});
+        push("/");
         return dispatch({
           type: actionTypes.SET_AUTH,
           payload: {
@@ -36,7 +27,7 @@ export const login = (username, password) => {
   };
 };
 
-export const signup = (email, username, password) => {
+export const signup = (email, username, password, push) => {
   const data = new FormData();
   data.append("email", email);
   data.append("userName", username);
@@ -48,8 +39,7 @@ export const signup = (email, username, password) => {
         data: data
       })
       .then((response) => {
-        cookie.set("accessToken", response.headers.accesstoken, {expires: extractDate(response.headers.expiration)});
-        cookie.set("refreshToken", response.headers.refreshtoken, {expires: extractDate(response.headers.expiration)});
+        push("/");
         return dispatch({
           type: actionTypes.SET_AUTH,
           payload: {

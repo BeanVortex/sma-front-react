@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import "./Posts.scss";
 import Post from "./Post/Post";
 import axios from "axios";
-import { Redirect, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import CardColumns from "react-bootstrap/CardColumns";
 import { connect } from "react-redux";
-
+import { requestHeader, redirect } from "../../Utils/AuthUtil";
 class Posts extends Component {
   state = {
     posts: null,
@@ -15,7 +15,11 @@ class Posts extends Component {
 
   componentDidMount() {
     if (this.props.user.authenticated) {
-      axios.get("/api/post/").then((response) => {
+      axios({
+        url: "/api/post/",
+        method: "GET",
+        headers: requestHeader(),
+      }).then((response) => {
         this.setState({ posts: response.data });
       });
     }
@@ -31,14 +35,10 @@ class Posts extends Component {
       ));
     }
 
-    let redirect = null;
-    if (!this.props.user.authenticated) {
-      redirect = <Redirect from="/" to="/login" />;
-    }
 
     return (
       <CardColumns>
-        {redirect}
+        {redirect(this.props.user.authenticated)}
         {posts}
       </CardColumns>
     );
