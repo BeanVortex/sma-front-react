@@ -20,8 +20,10 @@ const reducer = (state = initialState, action) => {
         profile: action.payload.profile,
         accessToken: action.payload.accessToken,
         refreshToken: action.payload.refreshToken,
-        authenticated: true
+        authenticated: true,
       };
+    case actionTypes.RESET_USER:
+      return initialState;
     default:
       return state;
   }

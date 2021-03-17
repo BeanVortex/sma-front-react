@@ -3,7 +3,7 @@ import { BrowserRouter } from "react-router-dom";
 import Sma from "./Sma";
 import axios from "axios";
 //import 'bootstrap/dist/css/bootstrap.min.css';
-import { setCookie } from "../Utils/AuthUtil";
+import { setCookie, requestHeader, isAuthenticated } from "../Utils/AuthUtil";
 
 axios.defaults.baseURL = "https://sma-app-back.herokuapp.com";
 //axios.defaults.headers.common["Authorization"] = "token";
@@ -11,6 +11,9 @@ axios.defaults.baseURL = "https://sma-app-back.herokuapp.com";
 
 axios.interceptors.request.use(
   (request) => {
+    if(isAuthenticated()) {
+      request.headers = requestHeader;
+    }
     return request;
   },
   (error) => {
@@ -20,6 +23,7 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   (response) => {
+    console.log(response);
     setCookie(
       "accessToken",
       response.headers.accesstoken,
@@ -30,9 +34,6 @@ axios.interceptors.response.use(
       response.headers.refreshtoken,
       response.headers.expiration
     );
-    if (response.data.id) {
-      setCookie("id", response.data.id, response.headers.expiration);
-    }
     return response;
   },
   (error) => {

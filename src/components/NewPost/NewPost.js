@@ -5,7 +5,6 @@ import no_img from "./no-photo.png";
 import { debounce } from "lodash";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Form, Card, Alert } from "react-bootstrap";
-import { requestHeader } from "../../Utils/AuthUtil";
 
 export default class NewPost extends Component {
   state = {
@@ -51,7 +50,6 @@ export default class NewPost extends Component {
     const file = this.state.file;
     const title = this.state.title;
     const content = this.state.content;
-
     if (this.validation(file, title, content)) {
       const data = new FormData();
       data.append("file", file);
@@ -61,7 +59,6 @@ export default class NewPost extends Component {
         url: "/api/post/",
         data: data,
         method: "POST",
-        headers: requestHeader(),
       }).then((response) => {
         this.statusAlerts(response);
         this.resetComponent();

@@ -3,8 +3,36 @@ import { NavLink } from "react-router-dom";
 import "./Header.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container, Nav, Navbar } from "react-bootstrap";
+import { connect } from "react-redux";
+import {logout} from '../../store/actions/userAction';
+import { isAuthenticated } from "../../Utils/AuthUtil";
+class Header extends Component {
+  authorization = () => {
+    if (!isAuthenticated()) {
+      return (
+        <>
+          <Nav.Item>
+            <NavLink className="nav-link" to="/signup">
+              Sign Up
+            </NavLink>
+          </Nav.Item>
+          <Nav.Item>
+            <NavLink className="nav-link" to="/login">
+              Login
+            </NavLink>
+          </Nav.Item>
+        </>
+      );
+    }
+    return (
+      <Nav.Item className="logout">
+        <div className="nav-link" onClick={this.props.logout}>
+          Logout
+        </div>
+      </Nav.Item>
+    );
+  };
 
-export default class Header extends Component {
   render() {
     return (
       <Navbar
@@ -21,16 +49,7 @@ export default class Header extends Component {
 
           <Navbar.Collapse className="justify-content-end" id="navbar-nav">
             <Nav className="navbar-nav justify-content-end">
-              <Nav.Item>
-                <NavLink className="nav-link" to="/signup">
-                  Sign Up
-                </NavLink>
-              </Nav.Item>
-              <Nav.Item>
-                <NavLink className="nav-link" to="/login">
-                  Login
-                </NavLink>
-              </Nav.Item>
+              {this.authorization()}
               <Nav.Item>
                 <NavLink className="nav-link" to="/posts">
                   Posts
@@ -53,3 +72,17 @@ export default class Header extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    user: state,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logout: () => dispatch(logout())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

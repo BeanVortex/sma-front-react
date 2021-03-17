@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import CardColumns from "react-bootstrap/CardColumns";
 import { connect } from "react-redux";
-import { requestHeader, redirect } from "../../Utils/AuthUtil";
+import { redirect } from "../../Utils/AuthUtil";
 class Posts extends Component {
   state = {
     posts: null,
@@ -14,12 +14,10 @@ class Posts extends Component {
   };
 
   componentDidMount() {
+    console.log(this.props.user);
     if (this.props.user.authenticated) {
-      axios({
-        url: "/api/post/",
-        method: "GET",
-        headers: requestHeader(),
-      }).then((response) => {
+      axios.get("/api/post/")
+      .then((response) => {
         this.setState({ posts: response.data });
       });
     }
@@ -34,7 +32,6 @@ class Posts extends Component {
         </Link>
       ));
     }
-
 
     return (
       <CardColumns>

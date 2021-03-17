@@ -30,6 +30,15 @@ export const redirect = (auth) => {
   return r;
 };
 
+
+export const clearCookies = () => {
+  if (isAuthenticated()){
+    cookie.remove("accessToken");
+    cookie.remove("refreshToken");
+    cookie.remove("id");
+  }
+};
+
 export const isAuthenticated = () => {
  return getCookie("refreshToken") && getCookie("accessToken") && getCookie("id") ? true : false;
 };
