@@ -1,6 +1,10 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
-import { clearCookies, setCookie } from "../../Utils/AuthUtil";
+import {
+  clearLocalStorage,
+  setCookie,
+  getAuthLocalData,
+} from "../../Utils/AuthUtil";
 
 export const login = (username, password, push) => {
   return (dispatch) => {
@@ -10,12 +14,12 @@ export const login = (username, password, push) => {
         password,
       })
       .then((response) => {
-        setCookie("id", response.data.id, response.headers.expiration);
+        localStorage.setItem("userId", response.data.id);
         push("/");
         return dispatch({
           type: actionTypes.SET_AUTH,
           payload: {
-            id: response.data.id,
+            userId: response.data.id,
             username: response.data.userName,
             email: response.data.email,
             profile: response.data.profile,
@@ -48,7 +52,7 @@ export const signup = (email, username, password, push) => {
         return dispatch({
           type: actionTypes.SET_AUTH,
           payload: {
-            id: response.data.id,
+            userId: response.data.id,
             username: response.data.userName,
             email: response.data.email,
             profile: response.data.profile,
@@ -64,13 +68,18 @@ export const signup = (email, username, password, push) => {
   };
 };
 
-export const checkAuth = () => {};
+export const mapAuthToState = () => {
+  return {
+    type: actionTypes.AUTHED,
+    payload: {
+      ...getAuthLocalData(),
+    },
+  };
+};
 
 export const logout = () => {
-  return (dispatch) => {
-    clearCookies();
-    return dispatch({
-      type: actionTypes.RESET_USER,
-    });
+  clearLocalStorage();
+  return {
+    type: actionTypes.RESET_USER,
   };
 };

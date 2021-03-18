@@ -1,48 +1,61 @@
-import Cookies from "universal-cookie";
-import {Redirect} from "react-router-dom";
-const cookie = new Cookies();
+import { Redirect } from "react-router-dom";
 
-export const setCookie = (key, value, expire) => {
-  cookie.set(key, value, { expires: extractDate(expire) });
+export const setLocalStorage = (key, value) => {
+  localStorage.setItem(key, value);
 };
 
-export const getCookie = (key) => {
-    return cookie.get(key);
+export const getStorageItem = (key) => {
+  return localStorage.getItem(key);
 };
-
 
 export const requestHeader = () => {
-    return {
-        AccessToken: getCookie("accessToken"),
-        RefreshToken: getCookie("refreshToken"),
-        UserId: getCookie("id"),
-      };
+  return {
+    AccessToken: getStorageItem("accessToken"),
+    RefreshToken: getStorageItem("refreshToken"),
+    UserId: getStorageItem("userId"),
+  };
 };
 
 export const redirect = (auth) => {
   let r = null;
   if (!auth) {
     r = <Redirect from="/" to="/login" />;
-    if (isAuthenticated()){
+    if (isAuthenticated() && !isTokenExpired()) {
       r = null;
     }
   }
   return r;
 };
 
-
-export const clearCookies = () => {
-  if (isAuthenticated()){
-    cookie.remove("accessToken");
-    cookie.remove("refreshToken");
-    cookie.remove("id");
+export const clearLocalStorage = () => {
+  if (isAuthenticated()) {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("userId");
   }
 };
 
-export const isAuthenticated = () => {
- return getCookie("refreshToken") && getCookie("accessToken") && getCookie("id") ? true : false;
+export const getAuthLocalData = () => {
+  return {
+    refreshToken: localStorage.getItem("refreshToken"),
+    accessToken: localStorage.getItem("accessToken"),
+    userId: localStorage.getItem("userId"),
+  };
 };
 
-const extractDate = (date) => {
-  return new Date(date);
+export const isAuthenticated = () => {
+  return getStorageItem("refreshToken") &&
+    getStorageItem("accessToken") &&
+    getStorageItem("userId")
+    ? true
+    : false;
+};
+
+const isTokenExpired = (date) => {
+  let expireDate = new Date(date)
+  if (new Date() > expireDate){
+    clearLocalStorage();
+    return true;
+  }
+  return false;
 };

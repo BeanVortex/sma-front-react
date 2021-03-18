@@ -3,15 +3,16 @@ import { BrowserRouter } from "react-router-dom";
 import Sma from "./Sma";
 import axios from "axios";
 //import 'bootstrap/dist/css/bootstrap.min.css';
+import { connect } from "react-redux";
 import { setCookie, requestHeader, isAuthenticated } from "../Utils/AuthUtil";
-
+import { mapAuthToState } from "../store/actions/userAction";
 axios.defaults.baseURL = "https://sma-app-back.herokuapp.com";
 //axios.defaults.headers.common["Authorization"] = "token";
 //axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
 
 axios.interceptors.request.use(
   (request) => {
-    if(isAuthenticated()) {
+    if (isAuthenticated()) {
       request.headers = requestHeader;
     }
     return request;
@@ -42,7 +43,14 @@ axios.interceptors.response.use(
 );
 
 class App extends Component {
+  checkStateAuth = () => {
+    if (!this.props.user.id) {
+      this.props.mapAuthToState();
+    }
+  };
+
   render() {
+    this.checkStateAuth();
     return (
       <BrowserRouter>
         <Sma />
@@ -51,4 +59,16 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    user: state,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    mapAuthToState: () => dispatch(mapAuthToState()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

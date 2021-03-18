@@ -24,6 +24,7 @@ class Header extends Component {
         </>
       );
     }
+    
     return (
       <Nav.Item className="logout">
         <div className="nav-link" onClick={this.props.logout}>
