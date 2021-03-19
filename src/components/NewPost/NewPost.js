@@ -5,8 +5,9 @@ import no_img from "./no-photo.png";
 import { debounce } from "lodash";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Form, Card, Alert } from "react-bootstrap";
-
-export default class NewPost extends Component {
+import { redirect } from "../../Utils/AuthUtil";
+import { connect } from "react-redux";
+class NewPost extends Component {
   state = {
     title: null,
     content: null,
@@ -180,6 +181,7 @@ export default class NewPost extends Component {
     console.log(this.props);
     return (
       <Form>
+        {redirect(this.props.user.authenticated)}
         <Card className="card d-block shadow-sm">
           <Card.Body className="pb-0">
             <Card.Img
@@ -241,3 +243,11 @@ export default class NewPost extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    user: state,
+  };
+};
+
+export default connect(mapStateToProps)(NewPost);
