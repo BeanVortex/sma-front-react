@@ -77,7 +77,6 @@ export const mapAuthToState = () => {
   };
 };
 
-
 export const logout = () => {
   clearLocalStorage();
   return {
