@@ -1,10 +1,6 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
-import {
-  clearLocalStorage,
-  setCookie,
-  getAuthLocalData,
-} from "../../Utils/AuthUtil";
+import { clearLocalStorage, getAuthLocalData } from "../../Utils/AuthUtil";
 
 export const login = (username, password, push) => {
   return (dispatch) => {
@@ -15,8 +11,9 @@ export const login = (username, password, push) => {
       })
       .then((response) => {
         localStorage.setItem("userId", response.data.id);
+        localStorage.setItem("expiration", response.headers.expiration);
         push("/");
-        return dispatch({
+        return {
           type: actionTypes.SET_AUTH,
           payload: {
             userId: response.data.id,
@@ -26,7 +23,7 @@ export const login = (username, password, push) => {
             accessToken: response.headers.accesstoken,
             refreshToken: response.headers.refreshtoken,
           },
-        });
+        };
       })
       .catch((error) => {
         console.log(error);
@@ -47,7 +44,8 @@ export const signup = (email, username, password, push) => {
       data: data,
     })
       .then((response) => {
-        setCookie("id", response.data.id, response.headers.expiration);
+        localStorage.setItem("userId", response.data.id);
+        localStorage.setItem("expiration", response.headers.expiration);
         push("/");
         return dispatch({
           type: actionTypes.SET_AUTH,
@@ -69,11 +67,13 @@ export const signup = (email, username, password, push) => {
 };
 
 export const mapAuthToState = () => {
-  return {
-    type: actionTypes.AUTHED,
-    payload: {
-      ...getAuthLocalData(),
-    },
+  return (dispatch) => {
+    return dispatch({
+      type: actionTypes.AUTHED,
+      payload: {
+        ...getAuthLocalData(),
+      },
+    });
   };
 };
 

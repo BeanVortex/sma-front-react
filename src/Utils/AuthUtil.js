@@ -8,11 +8,15 @@ export const getStorageItem = (key) => {
   return localStorage.getItem(key);
 };
 
+// HTTP HEADERS ARE CASE INSENSITIVE
 export const requestHeader = () => {
+  const AccessToken = getStorageItem("accessToken");
+  const RefreshToken = getStorageItem("refreshToken");
+  const UserId = getStorageItem("userId");
   return {
-    AccessToken: getStorageItem("accessToken"),
-    RefreshToken: getStorageItem("refreshToken"),
-    UserId: getStorageItem("userId"),
+    AccessToken,
+    RefreshToken,
+    UserId,
   };
 };
 
@@ -51,9 +55,9 @@ export const isAuthenticated = () => {
     : false;
 };
 
-const isTokenExpired = (date) => {
-  let expireDate = new Date(date)
-  if (new Date() > expireDate){
+const isTokenExpired = () => {
+  let expireDate = new Date(getStorageItem("expiration"));
+  if (new Date() > expireDate) {
     clearLocalStorage();
     return true;
   }

@@ -5,7 +5,7 @@ import no_img from "./no-photo.png";
 import { debounce } from "lodash";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Form, Card, Alert } from "react-bootstrap";
-import { redirect } from "../../Utils/AuthUtil";
+import { redirect, requestHeader } from "../../Utils/AuthUtil";
 import { connect } from "react-redux";
 class NewPost extends Component {
   state = {
@@ -51,6 +51,7 @@ class NewPost extends Component {
     const file = this.state.file;
     const title = this.state.title;
     const content = this.state.content;
+    console.log(requestHeader());
     if (this.validation(file, title, content)) {
       const data = new FormData();
       data.append("file", file);
@@ -60,10 +61,14 @@ class NewPost extends Component {
         url: "/api/post/",
         data: data,
         method: "POST",
-      }).then((response) => {
-        this.statusAlerts(response);
-        this.resetComponent();
-      });
+      })
+        .then((response) => {
+          this.statusAlerts(response);
+          this.resetComponent();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
@@ -244,10 +249,6 @@ class NewPost extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    user: state,
-  };
-};
+const mapStateToProps = (state) => state;
 
 export default connect(mapStateToProps)(NewPost);

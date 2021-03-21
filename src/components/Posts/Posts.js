@@ -7,6 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import CardColumns from "react-bootstrap/CardColumns";
 import { connect } from "react-redux";
 import { redirect } from "../../Utils/AuthUtil";
+
 class Posts extends Component {
   state = {
     posts: null,

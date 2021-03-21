@@ -4,16 +4,25 @@ import Sma from "./Sma";
 import axios from "axios";
 //import 'bootstrap/dist/css/bootstrap.min.css';
 import { connect } from "react-redux";
-import { setCookie, requestHeader, isAuthenticated } from "../Utils/AuthUtil";
+import {
+  setLocalStorage,
+  requestHeader,
+  isAuthenticated,
+} from "../Utils/AuthUtil";
 import { mapAuthToState } from "../store/actions/userAction";
-axios.defaults.baseURL = "https://sma-app-back.herokuapp.com";
+//axios.defaults.baseURL = "https://sma-app-back.herokuapp.com";
+axios.defaults.baseURL = "http://localhost:8080";
 //axios.defaults.headers.common["Authorization"] = "token";
-//axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
 
 axios.interceptors.request.use(
   (request) => {
+    console.log(request.headers.put);
     if (isAuthenticated()) {
-      request.headers = requestHeader;
+      let authHeaders = requestHeader();
+      for (let header in authHeaders){
+        console.log(authHeaders[header]);
+        request.headers[header] = authHeaders[header];
+      }
     }
     return request;
   },
@@ -25,16 +34,9 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   (response) => {
     console.log(response);
-    setCookie(
-      "accessToken",
-      response.headers.accesstoken,
-      response.headers.expiration
-    );
-    setCookie(
-      "refreshToken",
-      response.headers.refreshtoken,
-      response.headers.expiration
-    );
+    setLocalStorage("accessToken", response.headers.accesstoken);
+    setLocalStorage("refreshToken", response.headers.refreshtoken);
+ 
     return response;
   },
   (error) => {
@@ -44,12 +46,13 @@ axios.interceptors.response.use(
 
 class App extends Component {
   checkStateAuth = () => {
-    if (!this.props.user.id) {
+    if (!this.props.user.userId && isAuthenticated()) {
       this.props.mapAuthToState();
     }
   };
 
   render() {
+    console.log(this.props.user);
     this.checkStateAuth();
     return (
       <BrowserRouter>
@@ -59,11 +62,7 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    user: state,
-  };
-};
+const mapStateToProps = (state) => state;
 
 const mapDispatchToProps = (dispatch) => {
   return {
