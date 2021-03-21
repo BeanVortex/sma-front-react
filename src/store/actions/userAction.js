@@ -1,17 +1,19 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
-import { clearLocalStorage, getAuthLocalData } from "../../Utils/AuthUtil";
+import { clearLocalStorage, getAuthLocalData, setLocalStorage } from "../../Utils/AuthUtil";
 
 export const login = (username, password, push) => {
   return (dispatch) => {
+    
     axios
       .post("/api/user/login/", {
         username,
         password,
       })
       .then((response) => {
-        localStorage.setItem("userId", response.data.id);
-        localStorage.setItem("expiration", response.headers.expiration);
+        setLocalStorage("refresh_token", response.headers.refresh_token);
+        setLocalStorage("user_id", response.data.id);
+        setLocalStorage("expiration", response.headers.expiration);
         push("/");
         return {
           type: actionTypes.SET_AUTH,
@@ -20,8 +22,8 @@ export const login = (username, password, push) => {
             username: response.data.userName,
             email: response.data.email,
             profile: response.data.profile,
-            accessToken: response.headers.accesstoken,
-            refreshToken: response.headers.refreshtoken,
+            accessToken: response.headers.access_token,
+            refreshToken: response.headers.refresh_token,
           },
         };
       })
@@ -44,8 +46,9 @@ export const signup = (email, username, password, push) => {
       data: data,
     })
       .then((response) => {
-        localStorage.setItem("userId", response.data.id);
-        localStorage.setItem("expiration", response.headers.expiration);
+        setLocalStorage("user_id", response.data.id);
+        setLocalStorage("refresh_token", response.headers.refresh_token);
+        setLocalStorage("expiration", response.headers.expiration);
         push("/");
         return dispatch({
           type: actionTypes.SET_AUTH,
@@ -54,8 +57,8 @@ export const signup = (email, username, password, push) => {
             username: response.data.userName,
             email: response.data.email,
             profile: response.data.profile,
-            accessToken: response.headers.accesstoken,
-            refreshToken: response.headers.refreshtoken,
+            accessToken: response.headers.access_token,
+            refreshToken: response.headers.refresh_token,
           },
         });
       })

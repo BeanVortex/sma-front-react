@@ -34,9 +34,7 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   (response) => {
     console.log(response);
-    setLocalStorage("accessToken", response.headers.accesstoken);
-    setLocalStorage("refreshToken", response.headers.refreshtoken);
- 
+    setLocalStorage("access_token", response.headers.access_token); 
     return response;
   },
   (error) => {

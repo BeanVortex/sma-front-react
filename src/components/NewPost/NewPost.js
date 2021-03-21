@@ -57,6 +57,7 @@ class NewPost extends Component {
       data.append("file", file);
       data.append("title", title);
       data.append("content", content);
+      data.append("user.id", this.props.user.userId);
       axios({
         url: "/api/post/",
         data: data,

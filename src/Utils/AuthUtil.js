@@ -10,13 +10,13 @@ export const getStorageItem = (key) => {
 
 // HTTP HEADERS ARE CASE INSENSITIVE
 export const requestHeader = () => {
-  const AccessToken = getStorageItem("accessToken");
-  const RefreshToken = getStorageItem("refreshToken");
-  const UserId = getStorageItem("userId");
+  const access_token = getStorageItem("access_token");
+  const refresh_token = getStorageItem("refresh_token");
+  const user_id = getStorageItem("user_id");
   return {
-    AccessToken,
-    RefreshToken,
-    UserId,
+    access_token,
+    refresh_token,
+    user_id,
   };
 };
 
@@ -33,24 +33,25 @@ export const redirect = (auth) => {
 
 export const clearLocalStorage = () => {
   if (isAuthenticated()) {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("userId");
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    localStorage.removeItem("user_id");
+    localStorage.removeItem("expiration");
   }
 };
 
 export const getAuthLocalData = () => {
   return {
-    refreshToken: localStorage.getItem("refreshToken"),
-    accessToken: localStorage.getItem("accessToken"),
-    userId: localStorage.getItem("userId"),
+    refreshToken: localStorage.getItem("refresh_token"),
+    accessToken: localStorage.getItem("access_token"),
+    userId: localStorage.getItem("user_id"),
   };
 };
 
 export const isAuthenticated = () => {
-  return getStorageItem("refreshToken") &&
-    getStorageItem("accessToken") &&
-    getStorageItem("userId")
+  return getStorageItem("refresh_token") &&
+    getStorageItem("access_token") &&
+    getStorageItem("user_id")
     ? true
     : false;
 };
