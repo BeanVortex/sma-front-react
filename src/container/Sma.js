@@ -11,7 +11,6 @@ import Side from "../components/Side/Side";
 import { Container, Row, Col } from "react-bootstrap";
 import Login from "../components/User/Login/Login";
 import Signup from "../components/User/Signup/Signup";
-import { connect } from "react-redux";
 
 class Sma extends Component {
   render() {
@@ -45,16 +44,5 @@ class Sma extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    user: state,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    checkAuth: () => dispatch()
-  }
-}
 
 export default Sma;

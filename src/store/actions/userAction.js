@@ -15,7 +15,7 @@ export const login = (username, password, push) => {
         setLocalStorage("user_id", response.data.id);
         setLocalStorage("expiration", response.headers.expiration);
         push("/");
-        return {
+        return dispatch({
           type: actionTypes.SET_AUTH,
           payload: {
             userId: response.data.id,
@@ -25,7 +25,7 @@ export const login = (username, password, push) => {
             accessToken: response.headers.access_token,
             refreshToken: response.headers.refresh_token,
           },
-        };
+        });
       })
       .catch((error) => {
         console.log(error);

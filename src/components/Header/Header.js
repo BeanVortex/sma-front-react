@@ -8,7 +8,7 @@ import {logout} from '../../store/actions/userAction';
 import { isAuthenticated } from "../../Utils/AuthUtil";
 class Header extends Component {
   authorization = () => {
-    if (!isAuthenticated()) {
+    if (!this.props.authenticated && !isAuthenticated()) {
       return (
         <>
           <Nav.Item>
@@ -74,11 +74,7 @@ class Header extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    user: state,
-  };
-};
+const mapStateToProps = (state) => state;
 
 const mapDispatchToProps = (dispatch) => {
   return {

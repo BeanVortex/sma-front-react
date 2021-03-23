@@ -11,18 +11,22 @@ import { redirect } from "../../Utils/AuthUtil";
 class Posts extends Component {
   state = {
     posts: null,
-    pageable: true,
+    fetched: false
   };
 
   componentDidMount() {
-    console.log(this.props.user);
+    this.fetchPosts();
+  }
+
+ 
+
+  fetchPosts = () => {
     if (this.props.user.authenticated) {
-      axios.get("/api/post/")
-      .then((response) => {
-        this.setState({ posts: response.data });
+      axios.get("/api/post/").then((response) => {
+        this.setState({ posts: response.data, fetched: true });
       });
     }
-  }
+  };
 
   render() {
     let posts = "";

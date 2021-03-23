@@ -17,7 +17,7 @@ export default class Post extends Component {
             </Card.Header>
             <Card.Img
               className="rounded-0 p-0 border-bottom "
-              src={axios.defaults.baseURL + "/img/" + this.props.img}
+              src={axios.defaults.baseURL + "/img/posts/" + this.props.img}
               alt=""
             />
 
