@@ -10,8 +10,8 @@ import {
   isAuthenticated,
 } from "../Utils/AuthUtil";
 import { mapAuthToState } from "../store/actions/userAction";
-axios.defaults.baseURL = "https://sma-app-back.herokuapp.com";
-//axios.defaults.baseURL = "http://localhost:8080";
+//axios.defaults.baseURL = "https://sma-app-back.herokuapp.com";
+axios.defaults.baseURL = "http://localhost:8080";
 //axios.defaults.headers.common["Authorization"] = "token";
 
 axios.interceptors.request.use(
