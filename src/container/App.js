@@ -16,11 +16,9 @@ axios.defaults.baseURL = "http://localhost:8080";
 
 axios.interceptors.request.use(
   (request) => {
-    console.log(request.headers.put);
     if (isAuthenticated()) {
       let authHeaders = requestHeader();
       for (let header in authHeaders){
-        console.log(authHeaders[header]);
         request.headers[header] = authHeaders[header];
       }
     }
@@ -33,7 +31,6 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   (response) => {
-    console.log(response);
     setLocalStorage("access_token", response.headers.access_token); 
     return response;
   },
@@ -49,9 +46,11 @@ class App extends Component {
     }
   };
 
-  render() {
-    console.log(this.props.user);
+  componentDidMount () {
     this.checkStateAuth();
+  }
+
+  render() {
     return (
       <BrowserRouter>
         <Sma />

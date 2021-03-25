@@ -4,7 +4,7 @@ import Header from "../components/Header/Header";
 import { Route, Switch } from "react-router-dom";
 import Posts from "../components/Posts/Posts";
 import FullPost from "../components/Posts/FullPost/FullPost";
-import NewPost from "../components/NewPost/NewPost";
+import NewPost from "../components/Posts/NewPost/NewPost";
 import Discover from "../components/Discover/Discover";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Side from "../components/Side/Side";

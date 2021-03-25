@@ -8,12 +8,22 @@ class Signup extends Component {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
     console.log(this.props);
-    this.props.signup(email, username, password, this.props.history.push);
+    this.props.signup(email, username, password);
   };
 
   login = () => {
     this.props.history.push("/login");
   };
+  componentDidUpdate() {
+    if (this.props.user.authenticated) {
+      this.props.history.push("/");
+    }
+  }
+  componentDidMount() {
+    if (this.props.user.authenticated) {
+      this.props.history.push("/");
+    }
+  }
 
   render() {
     return (
@@ -73,8 +83,8 @@ const mapStateToProps = (state) => state;
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    signup: (email, username, password, push) =>
-      dispatch(actionCreators.signup(email, username, password, push)),
+    signup: (email, username, password) =>
+      dispatch(actionCreators.signup(email, username, password)),
   };
 };
 

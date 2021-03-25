@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import "./FullPost.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
-import  Comment  from './Comment/Comment';
+import NewComment from "../../Comment/NewComment/NewComment";
+import Comments from "../../Comment/Comments";
 import { Container, Card } from "react-bootstrap";
 import axios from "axios";
-
-export default class FullPost extends Component {
+import { connect } from "react-redux";
+class FullPost extends Component {
   state = {
     id: null,
     title: null,
@@ -16,10 +17,11 @@ export default class FullPost extends Component {
   };
 
   componentDidMount() {
+    console.log(this.props);
     if (this.props.match.params.id) {
       if (!this.state.loaded || this.state.id !== this.props.match.params.id) {
         axios({
-          url: "api/post/" + this.props.match.params.id,
+          url: `api/post/${this.props.match.params.id}/`,
           method: "GET",
         }).then((response) => {
           console.log(response);
@@ -38,26 +40,35 @@ export default class FullPost extends Component {
 
   render() {
     console.log(this.props);
-    // let comments = this.state.comments.map((comment) => (
-    //   <Comment key={comment.id}></Comment>
-    // ));
-    return (
-      <Container>
-        <Card className="card shadow-sm rounded-lg border-dark ">
-          <Card.Header className="rounded-top-lg  py-1 bg-dark text-light">
+
+    if (this.state.loaded) {
+    
+      return (
+        <Container>
+          <Card className="card shadow-sm rounded-lg border-dark ">
+            <Card.Img
+              className=" p-1 rounded-lg border-bottom "
+              src={axios.defaults.baseURL + "/img/posts/" + this.state.img}
+              alt=""
+            />
+
             <Card.Title className="d-flex align-items-center m-0 p-2">
               {this.state.title}
             </Card.Title>
-          </Card.Header>
-          <Card.Img
-            className="rounded-0 p-0 border-bottom "
-            src={axios.defaults.baseURL + "/img/" + this.state.img}
-            alt=""
-          />
+            <Card.Text className="p-2">{this.state.content}</Card.Text>
+          </Card>
 
-          <Card.Text className="p-2">{this.state.content}</Card.Text>
-        </Card>
-      </Container>
-    );
+          <NewComment className="mt-2 mb-2"/>
+
+          <Comments/>
+        </Container>
+      );
+    } else {
+      return null;
+    }
   }
 }
+
+const mapStateToProps = (state) => state;
+
+export default connect(mapStateToProps)(FullPost);

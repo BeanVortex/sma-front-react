@@ -7,12 +7,23 @@ class Login extends Component {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
     console.log(this.props);
-    this.props.login(username, password, this.props.history.push);
+    this.props.login(username, password);
   };
 
   signup = () => {
     this.props.history.push("/signup");
   };
+
+  componentDidUpdate() {
+    if (this.props.user.authenticated) {
+      this.props.history.push("/");
+    }
+  }
+  componentDidMount() {
+    if (this.props.user.authenticated) {
+      this.props.history.push("/");
+    }
+  }
 
   render() {
     return (
@@ -64,8 +75,8 @@ const mapStateToProps = (state) => state;
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    login: (username, password, push) =>
-      dispatch(actionCreators.login(username, password, push)),
+    login: (username, password) =>
+      dispatch(actionCreators.login(username, password)),
   };
 };
 

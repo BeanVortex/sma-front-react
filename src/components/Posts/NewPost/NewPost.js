@@ -5,7 +5,7 @@ import no_img from "./no-photo.png";
 import { debounce } from "lodash";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Form, Card, Alert } from "react-bootstrap";
-import { redirect, requestHeader } from "../../Utils/AuthUtil";
+import { redirect, requestHeader } from "../../../Utils/AuthUtil";
 import { connect } from "react-redux";
 class NewPost extends Component {
   state = {
@@ -57,7 +57,6 @@ class NewPost extends Component {
       data.append("file", file);
       data.append("title", title);
       data.append("content", content);
-      data.append("user.id", this.props.user.userId);
       axios({
         url: "/api/post/",
         data: data,
@@ -163,7 +162,7 @@ class NewPost extends Component {
     const contentIn = document.getElementById("content-in");
 
     new Promise((resolve) => {
-      setTimeout(resolve, 100);
+      setTimeout(resolve, 1000);
     }).then(() => {
       titleIn.value = "";
       contentIn.value = "";

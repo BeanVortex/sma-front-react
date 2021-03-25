@@ -2,7 +2,7 @@ import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { clearLocalStorage, getAuthLocalData, setLocalStorage } from "../../Utils/AuthUtil";
 
-export const login = (username, password, push) => {
+export const login = (username, password) => {
   return (dispatch) => {
     
     axios
@@ -12,9 +12,7 @@ export const login = (username, password, push) => {
       })
       .then((response) => {
         setLocalStorage("refresh_token", response.headers.refresh_token);
-        setLocalStorage("user_id", response.data.id);
         setLocalStorage("expiration", response.headers.expiration);
-        push("/");
         return dispatch({
           type: actionTypes.SET_AUTH,
           payload: {
@@ -34,7 +32,7 @@ export const login = (username, password, push) => {
   };
 };
 
-export const signup = (email, username, password, push) => {
+export const signup = (email, username, password) => {
   const data = new FormData();
   data.append("email", email);
   data.append("userName", username);
@@ -46,10 +44,8 @@ export const signup = (email, username, password, push) => {
       data: data,
     })
       .then((response) => {
-        setLocalStorage("user_id", response.data.id);
         setLocalStorage("refresh_token", response.headers.refresh_token);
         setLocalStorage("expiration", response.headers.expiration);
-        push("/");
         return dispatch({
           type: actionTypes.SET_AUTH,
           payload: {

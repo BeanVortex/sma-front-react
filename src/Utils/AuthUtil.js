@@ -12,11 +12,9 @@ export const getStorageItem = (key) => {
 export const requestHeader = () => {
   const access_token = getStorageItem("access_token");
   const refresh_token = getStorageItem("refresh_token");
-  const user_id = getStorageItem("user_id");
   return {
     access_token,
     refresh_token,
-    user_id,
   };
 };
 
@@ -35,7 +33,6 @@ export const clearLocalStorage = () => {
   if (isAuthenticated()) {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
-    localStorage.removeItem("user_id");
     localStorage.removeItem("expiration");
   }
 };
@@ -44,14 +41,12 @@ export const getAuthLocalData = () => {
   return {
     refreshToken: localStorage.getItem("refresh_token"),
     accessToken: localStorage.getItem("access_token"),
-    userId: localStorage.getItem("user_id"),
   };
 };
 
 export const isAuthenticated = () => {
   return getStorageItem("refresh_token") &&
-    getStorageItem("access_token") &&
-    getStorageItem("user_id")
+    getStorageItem("access_token")
     ? true
     : false;
 };

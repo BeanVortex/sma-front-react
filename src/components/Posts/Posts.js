@@ -15,13 +15,17 @@ class Posts extends Component {
   };
 
   componentDidMount() {
+    console.log("aa");
+    this.fetchPosts();
+  }
+  componentDidUpdate () {
     this.fetchPosts();
   }
 
  
 
   fetchPosts = () => {
-    if (this.props.user.authenticated) {
+    if (this.props.user.authenticated && !this.state.fetched) {
       axios.get("/api/post/").then((response) => {
         this.setState({ posts: response.data, fetched: true });
       });
