@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import "./FullPost.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
-import NewComment from "../../Comment/NewComment/NewComment";
-import Comments from "../../Comment/Comments";
-import { Container, Card } from "react-bootstrap";
+import NewComment from "../Comment/NewComment/NewComment";
+import Comments from "../Comment/Comments";
+import { Container, Card, Form } from "react-bootstrap";
 import axios from "axios";
 import { connect } from "react-redux";
+import { redirect } from "../../../Utils/AuthUtil";
 class FullPost extends Component {
   state = {
     id: null,
@@ -17,14 +18,12 @@ class FullPost extends Component {
   };
 
   componentDidMount() {
-    console.log(this.props);
     if (this.props.match.params.id) {
       if (!this.state.loaded || this.state.id !== this.props.match.params.id) {
         axios({
           url: `api/post/${this.props.match.params.id}/`,
           method: "GET",
         }).then((response) => {
-          console.log(response);
           this.setState({
             id: response.data.id,
             title: response.data.title,
@@ -39,12 +38,10 @@ class FullPost extends Component {
   }
 
   render() {
-    console.log(this.props);
-
     if (this.state.loaded) {
-    
       return (
         <Container>
+                  {redirect(this.props.user.authenticated)}
           <Card className="card shadow-sm rounded-lg border-dark ">
             <Card.Img
               className=" p-1 rounded-lg border-bottom "
@@ -58,9 +55,9 @@ class FullPost extends Component {
             <Card.Text className="p-2">{this.state.content}</Card.Text>
           </Card>
 
-          <NewComment className="mt-2 mb-2"/>
+          <NewComment postId={this.state.id} className="mt-2" />
 
-          <Comments/>
+          <Comments comments={this.state.comments} postId={this.state.id} />
         </Container>
       );
     } else {

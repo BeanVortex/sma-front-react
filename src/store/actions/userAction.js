@@ -12,6 +12,7 @@ export const login = (username, password) => {
       })
       .then((response) => {
         setLocalStorage("refresh_token", response.headers.refresh_token);
+        setLocalStorage("user_id", response.data.id);
         setLocalStorage("expiration", response.headers.expiration);
         return dispatch({
           type: actionTypes.SET_AUTH,
@@ -45,6 +46,7 @@ export const signup = (email, username, password) => {
     })
       .then((response) => {
         setLocalStorage("refresh_token", response.headers.refresh_token);
+        setLocalStorage("user_id", response.data.id);
         setLocalStorage("expiration", response.headers.expiration);
         return dispatch({
           type: actionTypes.SET_AUTH,
@@ -66,12 +68,11 @@ export const signup = (email, username, password) => {
 };
 
 export const mapAuthToState = () => {
+  const payload = getAuthLocalData();
   return (dispatch) => {
     return dispatch({
       type: actionTypes.AUTHED,
-      payload: {
-        ...getAuthLocalData(),
-      },
+      payload,
     });
   };
 };

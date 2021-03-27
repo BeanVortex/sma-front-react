@@ -14,7 +14,7 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_AUTH:
       return {
-        userId: action.payload.id,
+        userId: action.payload.userId,
         username: action.payload.username,
         email: action.payload.email,
         profile: action.payload.profile,

@@ -22,9 +22,11 @@ axios.interceptors.request.use(
         request.headers[header] = authHeaders[header];
       }
     }
+    console.log("[REQ]: ", request);
     return request;
   },
   (error) => {
+    console.log("[REQ](ERR): ",error);
     return Promise.reject(error);
   }
 );
@@ -32,9 +34,11 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   (response) => {
     setLocalStorage("access_token", response.headers.access_token); 
+    console.log("[RES]: ", response);
     return response;
   },
   (error) => {
+    console.log("[RES](ERR): ", error);
     return Promise.reject(error);
   }
 );
