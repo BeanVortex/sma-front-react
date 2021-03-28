@@ -9,13 +9,14 @@ import { connect } from "react-redux";
 import { redirect } from "../../Utils/AuthUtil";
 
 class Posts extends Component {
+
+
   state = {
     posts: null,
     fetched: false
   };
 
   componentDidMount() {
-    console.log("aa");
     this.fetchPosts();
   }
   componentDidUpdate () {

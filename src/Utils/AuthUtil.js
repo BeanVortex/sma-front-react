@@ -56,7 +56,9 @@ export const isAuthenticated = () => {
 
 const isTokenExpired = () => {
   let expireDate = new Date(getStorageItem("expiration"));
-  if (new Date() > expireDate) {
+  console.log(new Date(),"\n", expireDate);
+  console.log(new Date() > expireDate);
+  if (new Date() < expireDate) {
     clearLocalStorage();
     return true;
   }

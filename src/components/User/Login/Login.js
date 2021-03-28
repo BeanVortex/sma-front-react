@@ -6,7 +6,6 @@ class Login extends Component {
   loginEvent = () => {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
-    console.log(this.props);
     this.props.login(username, password);
   };
 
