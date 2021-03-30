@@ -1,10 +1,13 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
-import { clearLocalStorage, getAuthLocalData, setLocalStorage } from "../../Utils/AuthUtil";
+import {
+  clearLocalStorage,
+  getAuthLocalData,
+  setLocalStorage,
+} from "../../Utils/AuthUtil";
 
 export const login = (username, password) => {
   return (dispatch) => {
-    
     axios
       .post("/api/user/login/", {
         username,
@@ -12,7 +15,10 @@ export const login = (username, password) => {
       })
       .then((response) => {
         setLocalStorage("refresh_token", response.headers.refresh_token);
-        setLocalStorage("user_id", response.data.id);
+        setLocalStorage(
+          "user_id",
+          response.data.id ? response.data.id : response.headers.user_id
+        );
         setLocalStorage("expiration", response.headers.expiration);
         return dispatch({
           type: actionTypes.SET_AUTH,

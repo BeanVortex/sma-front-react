@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "./Post.scss";
 import axios from "axios";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { Container, Card } from "react-bootstrap";
 
 export default class Post extends Component {

@@ -27,7 +27,7 @@ class Posts extends Component {
 
   fetchPosts = () => {
     if (this.props.user.authenticated && !this.state.fetched) {
-      axios.get("/api/post/").then((response) => {
+      axios.get(`/api/post/user/${this.props.user.userId}/`).then((response) => {
         this.setState({ posts: response.data, fetched: true });
       });
     }
@@ -35,7 +35,7 @@ class Posts extends Component {
 
   render() {
     let posts = "";
-    if (this.state.posts != null) {
+    if (this.state.posts != null && this.state.posts != "") {
       posts = this.state.posts.content.map((post) => (
         <Link key={post.id} to={"posts/" + post.id}>
           <Post img={post.image} title={post.title} content={post.content} />
