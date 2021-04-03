@@ -7,6 +7,8 @@ import { Container, Card, Form } from "react-bootstrap";
 import axios from "axios";
 import { connect } from "react-redux";
 import { redirect } from "../../../Utils/AuthUtil";
+
+import * as actionTypes from '../../../store/actions/actionTypes';
 class FullPost extends Component {
   state = {
     id: null,
@@ -18,12 +20,24 @@ class FullPost extends Component {
   };
 
   componentDidMount() {
+    this.fetchData();
+    console.log(this.props);
+  }
+
+  componentDidUpdate() {
+    if(!this.props.comment.reloaded){
+      this.fetchData();
+    }
+  }
+
+  fetchData = () => {
     if (this.props.match.params.id) {
-      if (!this.state.loaded || this.state.id !== this.props.match.params.id) {
+      if (this.state.id !== this.props.match.params.id) {
         axios({
           url: `api/post/${this.props.match.params.id}/`,
           method: "GET",
         }).then((response) => {
+          this.props.reload();
           this.setState({
             id: response.data.id,
             title: response.data.title,
@@ -35,13 +49,14 @@ class FullPost extends Component {
         });
       }
     }
-  }
+  };
 
+  //TODO
   render() {
     if (this.state.loaded) {
       return (
         <Container>
-                  {redirect(this.props.user.authenticated)}
+          {redirect(this.props.user.authenticated)}
           <Card className="card shadow-sm rounded-lg border-dark ">
             <Card.Img
               className=" p-1 rounded-lg border-bottom "
@@ -55,7 +70,11 @@ class FullPost extends Component {
             <Card.Text className="p-2">{this.state.content}</Card.Text>
           </Card>
 
-          <NewComment postId={this.state.id} className="mt-2" />
+          <NewComment
+            updateComponent={this.componentDidUpdate}
+            postId={this.state.id}
+            className="mt-2"
+          />
 
           <Comments comments={this.state.comments} postId={this.state.id} />
         </Container>
@@ -67,5 +86,10 @@ class FullPost extends Component {
 }
 
 const mapStateToProps = (state) => state;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    reload: () => dispatch({type: actionTypes.NEW_COMMENT, posted: false, reloaded: true})
+  };
+};
 
-export default connect(mapStateToProps)(FullPost);
+export default connect(mapStateToProps, mapDispatchToProps)(FullPost);

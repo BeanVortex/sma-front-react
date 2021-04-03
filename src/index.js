@@ -5,12 +5,14 @@ import { Provider } from "react-redux";
 import { createStore, applyMiddleware, compose, combineReducers } from "redux";
 import thunk from "redux-thunk";
 import userReducer from "./store/reducers/userReducer";
+import commentReducer from "./store/reducers/commentReducer";
 
 //Redux devtools instruction
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
   user: userReducer,
+  comment: commentReducer
 });
 
 const store = createStore(

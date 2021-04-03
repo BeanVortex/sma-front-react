@@ -2,15 +2,16 @@ import axios from "axios";
 import React, { Component } from "react";
 import { Card, Form } from "react-bootstrap";
 import { connect } from "react-redux";
+import * as actionTypes from '../../../../store/actions/actionTypes';
 class NewComment extends Component {
   state = {
     sent: false,
     error: false,
   };
+
   postComment = () => {
     if (this.props.user.authenticated) {
       const content = document.getElementById("comment-content").value;
-      console.log(this.props);
       const data = {
         content,
         post: {
@@ -24,9 +25,11 @@ class NewComment extends Component {
         .post("/api/post/comment/", data)
         .then((res) => {
           this.setState({ sent: true });
+          this.props.postComment();
         })
         .catch((err) => {
           this.setState({ sent: false, error: true });
+          this.props.postCommentFailed();
         });
     }
   };
@@ -58,4 +61,11 @@ class NewComment extends Component {
 
 const mapStateToProps = (state) => state;
 
-export default connect(mapStateToProps)(NewComment);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    postComment: () => dispatch({type: actionTypes.NEW_COMMENT, posted: true}),
+    postCommentFailed: () => dispatch({type: actionTypes.NEW_COMMENT, posted: false})
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewComment);
