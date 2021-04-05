@@ -25,11 +25,9 @@ class NewComment extends Component {
         .post("/api/post/comment/", data)
         .then((res) => {
           this.setState({ sent: true });
-          this.props.postComment();
         })
         .catch((err) => {
           this.setState({ sent: false, error: true });
-          this.props.postCommentFailed();
         });
     }
   };
@@ -61,11 +59,6 @@ class NewComment extends Component {
 
 const mapStateToProps = (state) => state;
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    postComment: () => dispatch({type: actionTypes.NEW_COMMENT, posted: true}),
-    postCommentFailed: () => dispatch({type: actionTypes.NEW_COMMENT, posted: false})
-  };
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewComment);
+
+export default connect(mapStateToProps)(NewComment);

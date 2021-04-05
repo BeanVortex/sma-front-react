@@ -29,6 +29,9 @@ class Posts extends Component {
     if (this.props.user.authenticated && !this.state.fetched) {
       axios.get(`/api/post/user/${this.props.user.userId}/`).then((response) => {
         this.setState({ posts: response.data, fetched: true });
+        console.log("then");
+      }).catch(err => {
+        console.log("catch");
       });
     }
   };

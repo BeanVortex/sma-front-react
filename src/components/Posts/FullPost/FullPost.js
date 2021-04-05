@@ -8,7 +8,7 @@ import axios from "axios";
 import { connect } from "react-redux";
 import { redirect } from "../../../Utils/AuthUtil";
 
-import * as actionTypes from '../../../store/actions/actionTypes';
+import * as actionTypes from "../../../store/actions/actionTypes";
 class FullPost extends Component {
   state = {
     id: null,
@@ -20,15 +20,10 @@ class FullPost extends Component {
   };
 
   componentDidMount() {
-    this.fetchData();
-    console.log(this.props);
+    this.fetchData(true);
   }
 
-  componentDidUpdate() {
-    if(!this.props.comment.reloaded){
-      this.fetchData();
-    }
-  }
+
 
   fetchData = () => {
     if (this.props.match.params.id) {
@@ -37,7 +32,7 @@ class FullPost extends Component {
           url: `api/post/${this.props.match.params.id}/`,
           method: "GET",
         }).then((response) => {
-          this.props.reload();
+          console.log("fd");
           this.setState({
             id: response.data.id,
             title: response.data.title,
@@ -54,6 +49,7 @@ class FullPost extends Component {
   //TODO
   render() {
     if (this.state.loaded) {
+      console.log("dfdfs");
       return (
         <Container>
           {redirect(this.props.user.authenticated)}
@@ -70,11 +66,7 @@ class FullPost extends Component {
             <Card.Text className="p-2">{this.state.content}</Card.Text>
           </Card>
 
-          <NewComment
-            updateComponent={this.componentDidUpdate}
-            postId={this.state.id}
-            className="mt-2"
-          />
+          <NewComment postId={this.state.id} className="mt-2" />
 
           <Comments comments={this.state.comments} postId={this.state.id} />
         </Container>
@@ -86,10 +78,5 @@ class FullPost extends Component {
 }
 
 const mapStateToProps = (state) => state;
-const mapDispatchToProps = (dispatch) => {
-  return {
-    reload: () => dispatch({type: actionTypes.NEW_COMMENT, posted: false, reloaded: true})
-  };
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(FullPost);
+export default connect(mapStateToProps)(FullPost);
