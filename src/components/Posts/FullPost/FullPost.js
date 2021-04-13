@@ -32,7 +32,6 @@ class FullPost extends Component {
           url: `api/post/${this.props.match.params.id}/`,
           method: "GET",
         }).then((response) => {
-          console.log("fd");
           this.setState({
             id: response.data.id,
             title: response.data.title,
@@ -49,7 +48,6 @@ class FullPost extends Component {
   //TODO
   render() {
     if (this.state.loaded) {
-      console.log("dfdfs");
       return (
         <Container>
           {redirect(this.props.user.authenticated)}
@@ -72,7 +70,7 @@ class FullPost extends Component {
         </Container>
       );
     } else {
-      return null;
+      return redirect(this.props.user.authenticated);
     }
   }
 }
