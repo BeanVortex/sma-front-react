@@ -1,7 +1,5 @@
-import React, { Component } from "react";
+import React from "react";
 
-export default class Comment extends Component {
-  render() {
-    return <p className="border-bottom pb-5">{this.props.comment.content}</p>;
-  }
+export default Comment = (props) => {
+  return <p className="border-bottom pb-5">{this.props.comment.content}</p>;
 }

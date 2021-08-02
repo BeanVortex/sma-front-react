@@ -1,41 +1,40 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import "./Discover.scss";
 import CardColumns from "react-bootstrap/CardColumns";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Post from "../Posts/Post/Post";
 
-export default class Discover extends Component {
-  state = {
-    posts: null,
-    fetched: false,
-  };
+const Discover = props =>{
 
-  componentDidMount() {
-    this.fetchPosts();
-  }
-  componentDidUpdate() {
-    this.fetchPosts();
-  }
+  const [posts, setPosts] = useState(null);
+  const [fetched, setFetched] = useState(false);
 
-  fetchPosts = () => {
-    if (!this.state.fetched) {
+  const fetchPosts = () => {
+    if (!fetched) {
       axios.get("/api/post/all/").then((response) => {
-        this.setState({ posts: response.data, fetched: true });
+        setPosts(response.data);
+        setFetched(true);
       });
     }
   };
 
-  render() {
-    let posts = "";
-    if (this.state.posts != null && this.state.posts != "") {
-      posts = this.state.posts.content.map((post) => (
-        <Link key={post.id} to={"posts/" + post.id}>
-          <Post img={post.image} title={post.title} content={post.content} />
-        </Link>
-      ));
-    }
+  useEffect(()=>{
+    fetchPosts();
+    console.log("UseEffect");
+  }, []);
 
-    return <CardColumns>{posts}</CardColumns>;
+  let postList = "";
+  if (posts != null && posts != "") {
+    postList = posts.content.map((post) => (
+      <Link key={post.id} to={"posts/" + post.id}>
+        <Post img={post.image} title={post.title} content={post.content} />
+      </Link>
+    ));
   }
+
+  return <CardColumns>{postList}</CardColumns>;
+
 }
+
+export default Discover;
