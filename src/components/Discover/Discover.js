@@ -5,8 +5,8 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import Post from "../Posts/Post/Post";
 
-const Discover = props =>{
-
+const Discover = (props) => {
+  
   const [posts, setPosts] = useState(null);
   const [fetched, setFetched] = useState(false);
 
@@ -19,9 +19,8 @@ const Discover = props =>{
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchPosts();
-    console.log("UseEffect");
   }, []);
 
   let postList = "";
@@ -34,7 +33,6 @@ const Discover = props =>{
   }
 
   return <CardColumns>{postList}</CardColumns>;
-
-}
+};
 
 export default Discover;

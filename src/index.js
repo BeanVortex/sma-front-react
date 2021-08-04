@@ -3,9 +3,12 @@ import ReactDOM from "react-dom";
 import App from "./container/App";
 import AuthProvider from "./context/AuthContext";
 import axios from "axios";
-
+import {
+  isAuthenticated,
+  requestHeader,
+  setLocalStorage,
+} from "./Utils/AuthUtil";
 axios.defaults.baseURL = "http://localhost:8080";
-
 
 axios.interceptors.request.use(
   (request) => {

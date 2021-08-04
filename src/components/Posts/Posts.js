@@ -26,9 +26,9 @@ const Posts = (props) => {
     }
   }, [userAuth.authenticated, posts.fetched]);
 
-  let finalPosts = "";
-  if (posts != null && posts != "") {
-    finalPosts = posts.content.map((post) => (
+  let finalPosts;
+  if (posts.posts) {
+    finalPosts = posts.posts.content.map((post) => (
       <Link key={post.id} to={"posts/" + post.id}>
         <Post img={post.image} title={post.title} content={post.content} />
       </Link>
@@ -42,3 +42,5 @@ const Posts = (props) => {
     </CardColumns>
   );
 };
+
+export default Posts;

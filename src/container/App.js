@@ -6,10 +6,10 @@ import { AuthContext } from "../context/AuthContext";
 //import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = (props) => {
-  const { mapAuthToContext } = useContext(AuthContext);
+  const { userAuth, mapAuthToContext } = useContext(AuthContext);
 
   useEffect(() => {
-    if (!props.user.userId && isAuthenticated()) mapAuthToContext();
+    if (!userAuth.userId && isAuthenticated()) mapAuthToContext();
   }, []);
 
   return (

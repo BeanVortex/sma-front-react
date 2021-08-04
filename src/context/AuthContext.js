@@ -3,21 +3,29 @@ import {
   clearLocalStorage,
   getAuthLocalData,
   setLocalStorage,
-} from "../../Utils/AuthUtil";
+} from "../Utils/AuthUtil";
+import axios from "axios";
 
-export const AuthContext = createContext({
-  auth: {},
-});
+export const AuthContext = createContext({});
+
+const initialState = {
+  userId: null,
+  username: "",
+  email: "",
+  profile: "",
+  accessToken: "",
+  refreshToken: "",
+  authenticated: false,
+};
 
 export default (props) => {
   const [userAuth, setUserAuth] = useState({
-    userId: null,
-    username: "",
-    email: "",
-    profile: "",
-    accessToken: "",
-    refreshToken: "",
-    authenticated: false,
+    userAuth: initialState,
+    setUserAuth: () => {},
+    login: () => {},
+    signup: () => {},
+    mapAuthToContext: () => {},
+    logout: () => {},
   });
 
   const login = (username, password) => {
@@ -40,6 +48,7 @@ export default (props) => {
           profile: response.data.profile,
           accessToken: response.headers.access_token,
           refreshToken: response.headers.refresh_token,
+          authenticated: true,
         });
       })
       .catch((error) => {
@@ -69,6 +78,7 @@ export default (props) => {
           profile: response.data.profile,
           accessToken: response.headers.access_token,
           refreshToken: response.headers.refresh_token,
+          authenticated: true,
         });
       })
       .catch((error) => {
@@ -89,7 +99,7 @@ export default (props) => {
 
   const logout = () => {
     clearLocalStorage();
-    setUserAuth(null);
+    setUserAuth(initialState);
   };
 
   return (

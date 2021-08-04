@@ -32,94 +32,64 @@ const validation = (file, title, content) => {
   return true;
 };
 
-const statusAlerts = (response) => {
+const statusAlerts = (response, setUploadStatus) => {
   switch (response.status) {
     case 200:
-      this.setState({
-        upload_status: (
-          <Alert className="alert-success">Successfully posted</Alert>
-        ),
-      });
+      setUploadStatus(
+        <Alert className="alert-success">Successfully posted</Alert>
+      );
       break;
     case 500:
-      this.setState({
-        upload_status: (
-          <Alert className="alert-danger">
-            Server Error. Try again later. ErrorCode: {response.status}
-          </Alert>
-        ),
-      });
+      setUploadStatus(
+        <Alert className="alert-danger">
+          Server Error. Try again later. ErrorCode: {response.status}
+        </Alert>
+      );
       break;
     case 400:
-      this.setState({
-        upload_status: (
-          <Alert className="alert-danger">
-            Something went wrong. Try again later ErrorCode: {response.status}
-          </Alert>
-        ),
-      });
+      setUploadStatus(
+        <Alert className="alert-danger">
+          Something went wrong. Try again later ErrorCode: {response.status}
+        </Alert>
+      );
       break;
     case 401:
-      this.setState({
-        upload_status: (
-          <Alert className="alert-danger">
-            You are logged out. Try logging in again. ErrorCode:{" "}
-            {response.status}
-          </Alert>
-        ),
-      });
+      setUploadStatus(
+        <Alert className="alert-danger">
+          You are logged out. Try logging in again. ErrorCode: {response.status}
+        </Alert>
+      );
+
       break;
     case 404:
-      this.setState({
-        upload_status: (
-          <Alert className="alert-danger">
-            Not found. ErrorCode: {response.status}
-          </Alert>
-        ),
-      });
+      setUploadStatus(
+        <Alert className="alert-danger">
+          Not found. ErrorCode: {response.status}
+        </Alert>
+      );
       break;
     case 403:
-      this.setState({
-        upload_status: (
-          <Alert className="alert-danger">
-            You are not allowed to post. ErrorCode: {response.status}
-          </Alert>
-        ),
-      });
-      break;
-
-    default:
-  }
-};
-
-const fileHandleChange = (event) => {
-  if (event.target.files[0]) {
-    const postfix = event.target.files[0].name.split(".")[1];
-    if (postfix === "jpeg" || postfix === "jpg" || postfix === "png") {
-      this.setState({
-        file: event.target.files[0],
-        curImg: URL.createObjectURL(event.target.files[0]),
-      });
-      const label = document.getElementById("file-label");
-      label.innerHTML = event.target.files[0].name;
-    } else {
-      alert(
-        postfix + " files are not supported\nSupported formats: jpeg, jpg, png"
+      setUploadStatus(
+        <Alert className="alert-danger">
+          You are not allowed to post. ErrorCode: {response.status}
+        </Alert>
       );
-    }
+      break;
+    default:
+      <Alert className="alert-danger">
+        Something went wrong. ErrorCode: {response.status}
+      </Alert>;
   }
 };
 
 const NewPost = (props) => {
   const { userAuth } = useContext(AuthContext);
 
-  const [post, setPost] = useState({
-    title: null,
-    content: null,
-    file: null,
-    upload_status: null,
-    curImg: no_img,
-  });
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [file, setFile] = useState(null);
+  const [curImg, setCurImg] = useState(no_img);
+  const [uploadStatus, setUploadStatus] = useState(null);
 
   const resetComponent = () => {
     const fileLabel = document.getElementById("file-label");
@@ -132,25 +102,21 @@ const NewPost = (props) => {
       titleIn.value = "";
       contentIn.value = "";
       fileLabel.innerHTML = "Add Image";
-      setPost({
-        title: null,
-        content: null,
-        file: null,
-        upload_status: null,
-        curImg: no_img,
-      });
+      setTitle("");
+      setContent("");
+      setFile(null);
+      setFile(null);
+      setCurImg(no_img);
+      setUploadStatus(null);
 
       //history.push pushes to the stack
       // history.replace same as Redirect
       // <Redirect to="/posts"/>
-      this.props.history.replace({ pathname: "/posts" });
+      props.history.replace({ pathname: "/posts" });
     });
   };
 
   const upload = () => {
-    const file = post.file;
-    const title = post.title;
-    const content = post.content;
     if (validation(file, title, content)) {
       const data = new FormData();
       data.append("file", file);
@@ -162,7 +128,7 @@ const NewPost = (props) => {
         method: "POST",
       })
         .then((response) => {
-          statusAlerts(response);
+          statusAlerts(response, setUploadStatus);
           resetComponent();
         })
         .catch((err) => {
@@ -171,14 +137,32 @@ const NewPost = (props) => {
     }
   };
 
+  const fileHandleChange = (event) => {
+    if (event.target.files[0]) {
+      const postfix = event.target.files[0].name.split(".")[1];
+      if (postfix === "jpeg" || postfix === "jpg" || postfix === "png") {
+        setFile(event.target.files[0]);
+        setCurImg(URL.createObjectURL(event.target.files[0]));
+
+        const label = document.getElementById("file-label");
+        label.innerHTML = event.target.files[0].name;
+      } else {
+        alert(
+          postfix +
+            " files are not supported\nSupported formats: jpeg, jpg, png"
+        );
+      }
+    }
+  };
+
   const titleHandleChange = debounce((event) => {
-    setPost({ title: event.target.value });
+    setTitle(event.target.value);
     const titleIn = document.getElementById("title-in");
     titleIn.classList.remove("is-invalid");
   }, 250);
 
   const contentHandleChange = debounce((event) => {
-    setPost({ content: event.target.value });
+    setContent(event.target.value);
     const contentIn = document.getElementById("content-in");
     contentIn.classList.remove("is-invalid");
   }, 250);
@@ -190,7 +174,7 @@ const NewPost = (props) => {
         <Card.Body className="pb-0">
           <Card.Img
             className="rounded mb-3 img-fluid d-block w-100 mx-auto img-max"
-            src={post.curImg}
+            src={curImg}
             alt="File"
           />
 
@@ -240,7 +224,7 @@ const NewPost = (props) => {
               onClick={upload}
             />
           </Form.Group>
-          {post.upload_status}
+          {uploadStatus}
         </Card.Body>
       </Card>
     </Form>

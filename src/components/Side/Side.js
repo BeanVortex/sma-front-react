@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import "./Side.scss";
 
-export default Side = () => {
+const Side = () => {
   return (
     <div className="side-wrapper">
       <div></div>
@@ -16,3 +16,4 @@ export default Side = () => {
     </div>
   );
 };
+export default Side;
