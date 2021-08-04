@@ -1,64 +1,56 @@
 import axios from "axios";
-import React, { Component } from "react";
+import React, { useState, useContext } from "react";
 import { Card, Form } from "react-bootstrap";
-import { connect } from "react-redux";
-import * as actionTypes from '../../../../store/actions/actionTypes';
-class NewComment extends Component {
-  state = {
-    sent: false,
-    error: false,
-  };
+import { AuthContext } from "../../../../context/AuthContext";
 
-  postComment = () => {
-    if (this.props.user.authenticated) {
+const NewComment = (props) => {
+  const [state, setState] = useState({ sent: false, error: false });
+  const { userAuth } = useContext(AuthContext);
+
+  const postComment = () => {
+    if (userAuth.authenticated) {
       const content = document.getElementById("comment-content").value;
       const data = {
         content,
         post: {
-          id: this.props.postId,
+          id: props.postId,
         },
         user: {
-          id: this.props.user.userId,
+          id: userAuth.userId,
         },
       };
       axios
         .post("/api/post/comment/", data)
         .then((res) => {
-          this.setState({ sent: true });
+          setState({ sent: true });
         })
         .catch((err) => {
-          this.setState({ sent: false, error: true });
+          setState({ sent: false, error: true });
         });
     }
   };
 
-  render() {
-    return (
-      <Card className="shadow-sm rounded-lg mt-2 border-primary">
-        <Form>
-          <Form.Group className="d-flex flex-column align-items-center p-2">
-            <textarea
-              type="textarea"
-              rows="5"
-              id="comment-content"
-              placeholder="Your comment"
-              className="form-control mb-2"
-            />
-            <input
-              type="button"
-              className="btn btn-success mt-2"
-              value="send"
-              onClick={this.postComment}
-            />
-          </Form.Group>
-        </Form>
-      </Card>
-    );
-  }
-}
+  return (
+    <Card className="shadow-sm rounded-lg mt-2 border-primary">
+      <Form>
+        <Form.Group className="d-flex flex-column align-items-center p-2">
+          <textarea
+            type="textarea"
+            rows="5"
+            id="comment-content"
+            placeholder="Your comment"
+            className="form-control mb-2"
+          />
+          <input
+            type="button"
+            className="btn btn-success mt-2"
+            value="send"
+            onClick={postComment}
+          />
+        </Form.Group>
+      </Form>
+    </Card>
+  );
+};
 
-const mapStateToProps = (state) => state;
-
-
-
-export default connect(mapStateToProps)(NewComment);
+export default NewComment;
