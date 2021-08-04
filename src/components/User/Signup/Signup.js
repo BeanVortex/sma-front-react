@@ -1,91 +1,75 @@
-import React, { Component } from "react";
+import React, { useContext, useEffect } from "react";
 import { Form } from "react-bootstrap";
-import { connect } from "react-redux";
-import * as actionCreators from "../../../store/actions/userAction";
-class Signup extends Component {
-  signupEvent = () => {
+import { AuthContext } from "../../../context/AuthContext";
+
+const Signup = (props) => {
+  const { userAuth, signup } = useContext(AuthContext);
+
+  const signupEvent = () => {
     const email = document.getElementById("email").value;
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
-    console.log(this.props);
-    this.props.signup(email, username, password);
+    signup(email, username, password);
   };
 
-  login = () => {
-    this.props.history.push("/login");
+  const login = () => {
+    props.history.push("/login");
   };
-  componentDidUpdate() {
-    if (this.props.user.authenticated) {
-      this.props.history.push("/");
-    }
-  }
-  componentDidMount() {
-    if (this.props.user.authenticated) {
-      this.props.history.push("/");
-    }
-  }
 
-  render() {
-    return (
-      <Form className="d-flex justify-content-center h-100">
-        <div className="w-75 d-flex flex-column justify-content-center">
-          <Form.Group className="mb-4">
-            <input
-              type="text"
-              id="email"
-              placeholder="Email"
-              className="form-control "
-            />
-            <div className="invalid-feedback mb-3">Enter your email</div>
-          </Form.Group>
+  useEffect(() => {
+    if (userAuth.authenticated) props.history.push("/");
+  }, [userAuth.authenticated]);
 
-          <Form.Group className="mb-4">
-            <input
-              type="text"
-              id="username"
-              placeholder="Username"
-              className="form-control "
-            />
-            <div className="invalid-feedback mb-3">Enter your username</div>
-          </Form.Group>
+  return (
+    <Form className="d-flex justify-content-center h-100">
+      <div className="w-75 d-flex flex-column justify-content-center">
+        <Form.Group className="mb-4">
+          <input
+            type="text"
+            id="email"
+            placeholder="Email"
+            className="form-control "
+          />
+          <div className="invalid-feedback mb-3">Enter your email</div>
+        </Form.Group>
 
-          <Form.Group className="mb-4">
-            <input
-              type="password"
-              id="password"
-              placeholder="Password"
-              className="form-control"
-            />
-            <div className="invalid-feedback mb-3">Enter your password</div>
-          </Form.Group>
+        <Form.Group className="mb-4">
+          <input
+            type="text"
+            id="username"
+            placeholder="Username"
+            className="form-control "
+          />
+          <div className="invalid-feedback mb-3">Enter your username</div>
+        </Form.Group>
 
-          <Form.Group className="d-flex ">
-            <input
-              type="button"
-              className="btn btn-outline-success mr-2 col"
-              value="Login"
-              onClick={this.login}
-            />
-            <input
-              type="button"
-              className="btn btn-primary col"
-              value="SignUp"
-              onClick={this.signupEvent}
-            />
-          </Form.Group>
-        </div>
-      </Form>
-    );
-  }
-}
+        <Form.Group className="mb-4">
+          <input
+            type="password"
+            id="password"
+            placeholder="Password"
+            className="form-control"
+          />
+          <div className="invalid-feedback mb-3">Enter your password</div>
+        </Form.Group>
 
-const mapStateToProps = (state) => state;
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    signup: (email, username, password) =>
-      dispatch(actionCreators.signup(email, username, password)),
-  };
+        <Form.Group className="d-flex ">
+          <input
+            type="button"
+            className="btn btn-outline-success mr-2 col"
+            value="Login"
+            onClick={login}
+          />
+          <input
+            type="button"
+            className="btn btn-primary col"
+            value="SignUp"
+            onClick={signupEvent}
+          />
+        </Form.Group>
+      </div>
+    </Form>
+  );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Signup);
+export default Signup;

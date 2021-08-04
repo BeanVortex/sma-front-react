@@ -1,30 +1,44 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./container/App";
-import { Provider } from "react-redux";
-import { createStore, applyMiddleware, compose, combineReducers } from "redux";
-import thunk from "redux-thunk";
-import userReducer from "./store/reducers/userReducer";
+import AuthProvider from "./context/AuthContext";
+import axios from "axios";
 
-//Redux devtools instruction
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+axios.defaults.baseURL = "http://localhost:8080";
 
-const rootReducer = combineReducers({
-  user: userReducer
-});
 
-const store = createStore(
-  rootReducer,
-  composeEnhancers(applyMiddleware(thunk))
+axios.interceptors.request.use(
+  (request) => {
+    if (isAuthenticated()) {
+      let authHeaders = requestHeader();
+      for (let header in authHeaders) {
+        request.headers[header] = authHeaders[header];
+      }
+    }
+    console.log("[REQ]: ", request);
+    return request;
+  },
+  (error) => {
+    console.log("[REQ](ERR): ", error);
+    return Promise.reject(error);
+  }
+);
+
+axios.interceptors.response.use(
+  (response) => {
+    setLocalStorage("access_token", response.headers.access_token);
+    console.log("[RES]: ", response);
+    return response;
+  },
+  (error) => {
+    console.log("[RES](ERR): ", error);
+    return Promise.reject(error);
+  }
 );
 
 ReactDOM.render(
-  <Provider store={store}>
+  <AuthProvider>
     <App />
-  </Provider>,
+  </AuthProvider>,
   document.getElementById("root")
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
