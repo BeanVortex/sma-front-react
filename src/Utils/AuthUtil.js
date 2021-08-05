@@ -22,9 +22,7 @@ export const redirect = (auth) => {
   let r = null;
   if (!auth) {
     r = <Redirect from="/" to="/login" />;
-    if (isAuthenticated() && !isTokenExpired()) {
-      r = null;
-    }
+    if (isAuthenticated() && !isTokenExpired()) r = null;
   }
   return r;
 };

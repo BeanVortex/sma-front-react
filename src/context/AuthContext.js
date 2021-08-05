@@ -6,7 +6,14 @@ import {
 } from "../Utils/AuthUtil";
 import axios from "axios";
 
-export const AuthContext = createContext({});
+export const AuthContext = createContext({
+  userAuth: initialState,
+  setUserAuth: () => {},
+  login: () => {},
+  signup: () => {},
+  mapAuthToContext: () => {},
+  logout: () => {},
+});
 
 const initialState = {
   userId: null,
@@ -19,14 +26,7 @@ const initialState = {
 };
 
 export default (props) => {
-  const [userAuth, setUserAuth] = useState({
-    userAuth: initialState,
-    setUserAuth: () => {},
-    login: () => {},
-    signup: () => {},
-    mapAuthToContext: () => {},
-    logout: () => {},
-  });
+  const [userAuth, setUserAuth] = useState(initialState);
 
   const login = (username, password) => {
     axios

@@ -8,7 +8,6 @@ import { AuthContext } from "../../context/AuthContext";
 
 const Header = () => {
   const { userAuth, logout } = useContext(AuthContext);
-
   const authorization = () => {
     if (!userAuth.authenticated && !isAuthenticated()) {
       return (
