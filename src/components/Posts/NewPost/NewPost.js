@@ -7,6 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Form, Card, Alert } from "react-bootstrap";
 import { redirect } from "../../../Utils/AuthUtil";
 import { AuthContext } from "../../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const validation = (file, title, content) => {
   const titleIn = document.getElementById("title-in");
@@ -26,10 +27,7 @@ const validation = (file, title, content) => {
   if (!content) {
     contentIn.classList.add("is-invalid");
   }
-  if (!file || !title || !content) {
-    return false;
-  }
-  return true;
+  return !(!file || !title || !content);
 };
 
 const statusAlerts = (response, setUploadStatus) => {
@@ -82,8 +80,9 @@ const statusAlerts = (response, setUploadStatus) => {
   }
 };
 
-const NewPost = (props) => {
+const NewPost = () => {
   const { userAuth } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -109,10 +108,7 @@ const NewPost = (props) => {
       setCurImg(no_img);
       setUploadStatus(null);
 
-      //history.push pushes to the stack
-      // history.replace same as Redirect
-      // <Redirect to="/posts"/>
-      props.history.replace({ pathname: "/posts" });
+      navigate("/posts", { replace: true });
     });
   };
 
@@ -179,7 +175,7 @@ const NewPost = (props) => {
           />
 
           <Form.Group>
-            <div className="custom-file">
+            <div className="custom-file mb-3">
               <input
                 type="file"
                 name="file"
@@ -188,9 +184,6 @@ const NewPost = (props) => {
                 onChange={(event) => fileHandleChange(event)}
               />
 
-              <label id="file-label" className="custom-file-label">
-                Add Image
-              </label>
             </div>
           </Form.Group>
 
@@ -216,10 +209,10 @@ const NewPost = (props) => {
             <div className="invalid-feedback mb-3">Enter some Content</div>
           </Form.Group>
 
-          <Form.Group className="d-flex justify-content-center">
+          <Form.Group className="d-flex justify-content-center mb-2">
             <input
               type="button"
-              className="btn btn-outline-success d-block w-100"
+              className="btn btn-outline-success d-block w-50"
               value="Post it"
               onClick={upload}
             />

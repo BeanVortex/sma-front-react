@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import App from "./container/App";
 import AuthProvider from "./context/AuthContext";
 import axios from "axios";
@@ -39,9 +39,8 @@ axios.interceptors.response.use(
   }
 );
 
-ReactDOM.render(
+createRoot(document.getElementById("root")).render(
   <AuthProvider>
     <App />
-  </AuthProvider>,
-  document.getElementById("root")
+  </AuthProvider>
 );

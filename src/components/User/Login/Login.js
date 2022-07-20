@@ -1,9 +1,11 @@
 import React, { useContext, useEffect } from "react";
 import { Form } from "react-bootstrap";
 import { AuthContext } from "../../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
-const Login = (props) => {
+const Login = () => {
   const { userAuth, login } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const loginEvent = () => {
     const username = document.getElementById("username").value;
@@ -11,12 +13,10 @@ const Login = (props) => {
     login(username, password);
   };
 
-  const signup = () => {
-    props.history.push("/signup");
-  };
+  const signup = () => navigate("/signup");
 
   useEffect(() => {
-    if (userAuth.authenticated) props.history.push("/");
+    if (userAuth.authenticated) navigate("/", { replace: true });
   }, [userAuth.authenticated]);
 
   return (
@@ -47,13 +47,13 @@ const Login = (props) => {
         <Form.Group className="d-flex ">
           <input
             type="button"
-            className="btn btn-success mr-2 col"
+            className="btn btn-success col mx-1"
             value="Login"
             onClick={loginEvent}
           />
           <input
             type="button"
-            className="btn btn-outline-primary col"
+            className="btn btn-outline-primary col mx-1"
             value="SignUp"
             onClick={signup}
           />

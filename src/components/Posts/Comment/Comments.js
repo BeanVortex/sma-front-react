@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState, useEffect } from "react";
 import Comment from "./Comment/Comment";
 
@@ -7,10 +8,11 @@ const Comments = (props) => {
     loaded: false,
   });
 
-  useEffect(
-    () => setState({ comments: props.comments, loaded: true }),
-    []
-  );
+  useEffect(() => {
+    axios.get(`/api/post/comment/${props.postId}/`).then((response) => {
+      setState({ comments: response.data.content, loaded: true });
+    });
+  }, []);
 
   if (state.loaded) {
     const comments = state.comments.map((comment, index) => (

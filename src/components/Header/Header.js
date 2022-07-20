@@ -39,9 +39,9 @@ const Header = () => {
     <Navbar
       collapseOnSelect
       expand="md"
-      className="navbar sticky-top top-1 mb-3 rounded-lg bg-dark navbar-dark mt-1"
+      className="navbar sticky-top top-1 mb-3 rounded-3 bg-dark navbar-dark mt-1"
     >
-      <Container className="py-2 px-0">
+      <Container className="py-2 px-2">
         <NavLink className="navbar-brand" to="/">
           SMA
         </NavLink>

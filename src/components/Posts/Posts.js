@@ -4,11 +4,11 @@ import Post from "./Post/Post";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import CardColumns from "react-bootstrap/CardColumns";
+import Card from "react-bootstrap/Card";
 import { redirect } from "../../Utils/AuthUtil";
 import { AuthContext } from "../../context/AuthContext";
 
-const Posts = (props) => {
+const Posts = () => {
   const { userAuth } = useContext(AuthContext);
   const [posts, setPosts] = useState({
     posts: null,
@@ -22,7 +22,7 @@ const Posts = (props) => {
         .then((response) => {
           setPosts({ posts: response.data, fetched: true });
         })
-        .catch((err) => {});
+        .catch((_err) => {});
     }
   }, [userAuth.authenticated, posts.fetched]);
 
@@ -36,10 +36,10 @@ const Posts = (props) => {
   }
 
   return (
-    <CardColumns>
+    <Card>
       {redirect(userAuth.authenticated)}
       {finalPosts}
-    </CardColumns>
+    </Card>
   );
 };
 

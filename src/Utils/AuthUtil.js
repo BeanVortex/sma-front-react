@@ -1,7 +1,16 @@
-import { Redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 export const setLocalStorage = (key, value) => {
   localStorage.setItem(key, value);
+};
+
+export const saveTokens = (headers, body) => {
+  const data = {
+    access_token: headers.access_token,
+    refresh_token: headers.refresh_token,
+    user_id: body.id,
+  };
+  setLocalStorage("auth_data", JSON.stringify(data));
 };
 
 export const getStorageItem = (key) => {
@@ -10,53 +19,38 @@ export const getStorageItem = (key) => {
 
 // HTTP HEADERS ARE CASE INSENSITIVE
 export const requestHeader = () => {
-  const access_token = getStorageItem("access_token");
-  const refresh_token = getStorageItem("refresh_token");
+  const data = JSON.parse(getStorageItem("auth_data"));
   return {
-    access_token,
-    refresh_token,
+    access_token: data.access_token,
+    refresh_token: data.refresh_token,
   };
 };
 
 export const redirect = (auth) => {
   let r = null;
   if (!auth) {
-    r = <Redirect from="/" to="/login" />;
-    if (isAuthenticated() && !isTokenExpired()) r = null;
+    r = <Navigate from="/" to="/login" />;
+    if (isAuthenticated()) r = null;
   }
   return r;
 };
 
 export const clearLocalStorage = () => {
-  if (isAuthenticated()) {
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("refresh_token");
-    localStorage.removeItem("user_id");
-    localStorage.removeItem("expiration");
-  }
+  if (isAuthenticated()) localStorage.removeItem("auth_data");
 };
 
 export const getAuthLocalData = () => {
+  const data = JSON.parse(getStorageItem("auth_data"));
+
   return {
-    refreshToken: localStorage.getItem("refresh_token"),
-    accessToken: localStorage.getItem("access_token"),
-    userId: localStorage.getItem("user_id"),
+    refreshToken: data.refresh_token,
+    accessToken: data.access_token,
+    userId: data.user_id,
   };
 };
 
 export const isAuthenticated = () => {
-  return getStorageItem("refresh_token") &&
-    getStorageItem("access_token") &&
-    getStorageItem("user_id")
-    ? true
-    : false;
+  return getStorageItem("auth_data") ? true : false;
 };
 
-const isTokenExpired = () => {
-  let expireDate = new Date(getStorageItem("expiration"));
-  if (new Date().getTime() > expireDate.getTime()) {
-    clearLocalStorage();
-    return true;
-  }
-  return false;
-};
+

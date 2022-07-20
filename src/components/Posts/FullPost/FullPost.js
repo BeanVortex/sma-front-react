@@ -7,9 +7,11 @@ import { Container, Card } from "react-bootstrap";
 import axios from "axios";
 import { redirect } from "../../../Utils/AuthUtil";
 import { AuthContext } from "../../../context/AuthContext";
+import { useParams } from "react-router-dom";
 
 const FullPost = () => {
   const { userAuth } = useContext(AuthContext);
+  const { postId } = useParams();
 
   const [post, setPost] = useState({
     id: null,
@@ -22,10 +24,11 @@ const FullPost = () => {
 
   useEffect(() => {
     //fetch data
-    if (props.match.params.id) {
-      if (post.id !== props.match.params.id) {
+    console.log(postId);
+    if (postId) {
+      if (post.id !== postId) {
         axios({
-          url: `api/post/${props.match.params.id}/`,
+          url: `api/post/${postId}/`,
           method: "GET",
         }).then((response) => {
           setPost({
@@ -60,7 +63,7 @@ const FullPost = () => {
 
         <NewComment postId={post.id} className="mt-2" />
 
-        <Comments comments={post.comments} postId={post.id} />
+        <Comments postId={post.id} />
       </Container>
     );
   } else {

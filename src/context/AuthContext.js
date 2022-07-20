@@ -2,18 +2,10 @@ import React, { useState, createContext } from "react";
 import {
   clearLocalStorage,
   getAuthLocalData,
+  saveTokens,
   setLocalStorage,
 } from "../Utils/AuthUtil";
 import axios from "axios";
-
-export const AuthContext = createContext({
-  userAuth: initialState,
-  setUserAuth: () => {},
-  login: () => {},
-  signup: () => {},
-  mapAuthToContext: () => {},
-  logout: () => {},
-});
 
 const initialState = {
   userId: null,
@@ -25,6 +17,15 @@ const initialState = {
   authenticated: false,
 };
 
+export const AuthContext = createContext({
+  userAuth: initialState,
+  setUserAuth: () => {},
+  login: () => {},
+  signup: () => {},
+  mapAuthToContext: () => {},
+  logout: () => {},
+});
+
 export default (props) => {
   const [userAuth, setUserAuth] = useState(initialState);
 
@@ -35,12 +36,7 @@ export default (props) => {
         password,
       })
       .then((response) => {
-        setLocalStorage("refresh_token", response.headers.refresh_token);
-        setLocalStorage(
-          "user_id",
-          response.data.id ? response.data.id : response.headers.user_id
-        );
-        setLocalStorage("expiration", response.headers.expiration);
+        saveTokens(response.headers);
         setUserAuth({
           userId: response.data.id,
           username: response.data.userName,
@@ -57,20 +53,19 @@ export default (props) => {
       });
   };
 
-  const signup = (email, username, password) => {
+  const signup = (email, username, password, passwordRepeat) => {
     const data = new FormData();
     data.append("email", email);
     data.append("userName", username);
     data.append("password", password);
+    data.append("passwordRepeat", passwordRepeat);
     axios({
       url: "/api/user/signup/",
       method: "POST",
       data: data,
     })
       .then((response) => {
-        setLocalStorage("refresh_token", response.headers.refresh_token);
-        setLocalStorage("user_id", response.data.id);
-        setLocalStorage("expiration", response.headers.expiration);
+        saveTokens(response.headers, response.data);
         setUserAuth({
           userId: response.data.id,
           username: response.data.userName,

@@ -3,9 +3,8 @@ import { BrowserRouter } from "react-router-dom";
 import Sma from "./Sma";
 import { isAuthenticated } from "../Utils/AuthUtil";
 import { AuthContext } from "../context/AuthContext";
-//import 'bootstrap/dist/css/bootstrap.min.css';
 
-const App = (props) => {
+const App = () => {
   const { userAuth, mapAuthToContext } = useContext(AuthContext);
 
   useEffect(() => {
